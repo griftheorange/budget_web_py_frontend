@@ -2,6 +2,15 @@ import React, { useEffect } from 'react';
 import {Line} from 'react-chartjs-2'
 import fetcher from '../adaptors/dataFetcher.js'
 import {connect} from 'react-redux'
+import * as d3 from 'd3'
+
+const linear = d3.scaleLinear()
+    .domain([0, 4])
+    .range(["rgb(32,6,162,1)", "	rgb(255,171,50,1)"])
+
+const linearOpacity = d3.scaleLinear()
+    .domain([0, 4])
+    .range(["rgb(32,6,162,0.05)", "	rgb(255,171,50,0.05)"])
 
 function Main(props) {
     useEffect(() => {
@@ -13,15 +22,58 @@ function Main(props) {
     }, [props.lineData])
 
     return (
-        <Line data={{
-            datasets: null
-        }}/>
+        <div style={{height: "40em", width: "80%"}}>
+            <Line 
+            data={{
+                datasets: props.lineData
+            }}
+            options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Amount"
+                        }
+                    }],
+                    xAxes: [{
+                        type: 'linear',
+                        display: true,
+                        ticks: {
+                            callback: function(value){
+                                let date = (new Date(value*1000))
+                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: "Date"
+                        }
+                    }]
+                }
+            }}
+            />
+        </div>
     );
 }
 
 function loadGraphData(props){
     let data = fetcher.getLineGraphData()
     data.then((json) => {
+        json = json.map((dataArr, index) => {
+            return {
+                label: dataArr['header'],
+                data: dataArr['data'],
+                backgroundColor: linearOpacity(index),
+                pointBackgroundColor: linear(index),
+                pointHoverBackgroundColor: linear(index),
+                pointBorderColor: "rgb(0,0,0,0)",
+                lineTension: 0,
+                pointRadius: "2"
+            }
+        })
         props.setLineData(json)
     })
 }
