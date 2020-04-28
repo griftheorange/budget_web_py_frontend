@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import {Line} from 'react-chartjs-2'
+import {Resizable} from 're-resizable'
 import fetcher from '../adaptors/dataFetcher.js'
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
@@ -22,7 +23,12 @@ function Main(props) {
     }, [props.lineData])
 
     return (
-        <div style={{height: "40em", width: "80%"}}>
+        <div style={{width: "100%", height: "50em"}}>
+            <div style={{borderStyle: "solid", 
+                        borderColor: "black", 
+                        borderWidth:"thin", 
+                        width: "80%",
+                        height: "80%"}}>
             <Line 
             data={{
                 datasets: props.lineData
@@ -55,6 +61,7 @@ function Main(props) {
                 }
             }}
             />
+        </div>
         </div>
     );
 }
