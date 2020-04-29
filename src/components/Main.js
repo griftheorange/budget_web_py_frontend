@@ -61,7 +61,8 @@ function Main(props) {
                 }
             }}
             />
-        </div>
+            </div>
+            <button onClick={handleCSVPrint}>Click Me</button>
         </div>
     );
 }
@@ -83,6 +84,11 @@ function loadGraphData(props){
         })
         props.setLineData(json)
     })
+}
+
+function handleCSVPrint(event){
+    fetcher.printCSV()
+    .then(console.log)
 }
 
 function mapStateToProps(state){
