@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {Line} from 'react-chartjs-2'
 import {Resizable} from 're-resizable'
-import fetcher from '../adaptors/dataFetcher.js'
+import Fetcher from '../adaptors/dataFetcher.js'
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 
@@ -62,13 +62,20 @@ function Main(props) {
             }}
             />
             </div>
-            <button onClick={handleCSVPrint}>Click Me</button>
+            <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
+            <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
+                <input type="file" 
+                       value={props.submittedFile ? props.submittedFile : ""} 
+                       accept=".xls,.xlsx,.csv" 
+                       onChange={(e) => {handleFileSubmit(e, props)}}/>
+                <button type="submit">Send Back File</button>
+            </form>
         </div>
     );
 }
 
 function loadGraphData(props){
-    let data = fetcher.getLineGraphData()
+    let data = Fetcher.getLineGraphData()
     data.then((json) => {
         json = json.map((dataArr, index) => {
             return {
@@ -87,13 +94,30 @@ function loadGraphData(props){
 }
 
 function handleCSVPrint(event){
-    fetcher.printCSV()
+    Fetcher.printCSV()
     .then(console.log)
+}
+
+function handleFileSubmit(event, props){
+    props.setSubmittedFile(event.target.value)
+}
+
+function handleSendBackFile(e, props){
+    e.preventDefault()
+    if(props.submittedFile){
+        let data = new FormData()
+        data.append('file', e.target.querySelector("input").files[0])
+        data.append('filename', e.target.querySelector("input").files[0].name)
+        
+        Fetcher.submitFile(data)
+        .then(console.log)
+    }
 }
 
 function mapStateToProps(state){
     return {
-        lineData: state.lineData
+        lineData: state.lineData,
+        submittedFile: state.submittedFile
     }
 }
 
@@ -103,6 +127,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_LINE_DATA",
                 value: data
+            })
+        },
+        setSubmittedFile: (file) => {
+            dispatch({
+                type: "SET_SUBMITTED_FILE",
+                value: file
             })
         }
     }

@@ -7,6 +7,14 @@ class DataFetcher {
         .then((r) => r.json())
     }
 
+    static submitFile(formData){
+        console.log(formData)
+        return fetch(`${API_DOMAIN}/data`, {
+            method:'POST',
+            body:formData
+        })
+    }
+
     static printCSV(){
         return fetch(`${API_DOMAIN}/print_csv`)
     }
