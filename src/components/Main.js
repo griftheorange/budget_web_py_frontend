@@ -16,7 +16,7 @@ const linearOpacity = d3.scaleLinear()
 function Main(props) {
     useEffect(() => {
         loadGraphData(props)
-    }, [])
+    }, [props.lineDataColumns])
 
     useEffect(() => {
 
@@ -63,6 +63,7 @@ function Main(props) {
             />
             </div>
             <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
+            <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
             <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
                 <input type="file" 
                        value={props.submittedFile ? props.submittedFile : ""} 
@@ -75,7 +76,7 @@ function Main(props) {
 }
 
 function loadGraphData(props){
-    let data = Fetcher.getLineGraphData()
+    let data = Fetcher.getLineGraphData(props.lineDataColumns)
     data.then((json) => {
         json = json.map((dataArr, index) => {
             return {
@@ -98,6 +99,14 @@ function handleCSVPrint(event){
     .then(console.log)
 }
 
+function handleToggleTotal(props){
+    if(props.lineDataColumns === "STD"){
+        props.setLineDataColumns("ALL")
+    } else {
+        props.setLineDataColumns("STD")
+    }
+}
+
 function handleFileSubmit(event, props){
     props.setSubmittedFile(event.target.value)
 }
@@ -117,6 +126,7 @@ function handleSendBackFile(e, props){
 function mapStateToProps(state){
     return {
         lineData: state.lineData,
+        lineDataColumns: state.lineDataColumns,
         submittedFile: state.submittedFile
     }
 }
@@ -133,6 +143,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_SUBMITTED_FILE",
                 value: file
+            })
+        },
+        setLineDataColumns: (columns) => {
+            dispatch({
+                type: "SET_LINE_DATA_COLUMNS",
+                value: columns
             })
         }
     }
