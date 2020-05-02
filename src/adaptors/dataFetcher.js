@@ -3,7 +3,7 @@ const API_DOMAIN = "http://localhost:5000/"
 class DataFetcher {
 
     static getLineGraphData(selection){
-        return fetch(`${API_DOMAIN}/line_data/data?columns=${selection}`)
+        return fetch(`${API_DOMAIN}/line_data/data`)
         .then((r) => r.json())
     }
 

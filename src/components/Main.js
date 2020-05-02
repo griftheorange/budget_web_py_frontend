@@ -16,11 +16,13 @@ const linearOpacity = d3.scaleLinear()
 function Main(props) {
     useEffect(() => {
         loadGraphData(props)
-    }, [props.lineDataColumns])
+    }, [])
 
     useEffect(() => {
-
-    }, [props.lineData])
+        if(props.lineData){
+            calcProcessedLineData(props, props.lineData)
+        }
+    }, [props.lineDataColumns])
 
     return (
         <div style={{width: "100%", height: "50em"}}>
@@ -31,7 +33,7 @@ function Main(props) {
                         height: "80%"}}>
             <Line 
             data={{
-                datasets: props.lineData
+                datasets: props.processedLineData
             }}
             options={{
                 responsive: true,
@@ -91,7 +93,19 @@ function loadGraphData(props){
             }
         })
         props.setLineData(json)
+        calcProcessedLineData(props, json)
     })
+}
+
+function calcProcessedLineData(props, data){
+    data = [...data]
+    if(props.lineDataColumns == "STD"){
+        let totalIndex = data.indexOf((element) => {
+            return element['label'] == "Total Income"
+        })
+        data.splice(totalIndex, 1)
+    }
+    props.setProcessedLineData(data)
 }
 
 function handleCSVPrint(event){
@@ -127,6 +141,7 @@ function mapStateToProps(state){
     return {
         lineData: state.lineData,
         lineDataColumns: state.lineDataColumns,
+        processedLineData: state.processedLineData,
         submittedFile: state.submittedFile
     }
 }
@@ -149,6 +164,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_LINE_DATA_COLUMNS",
                 value: columns
+            })
+        },
+        setProcessedLineData: (data) => {
+            dispatch({
+                type: "SET_PROCESSED_LINE_DATA",
+                value: data
             })
         }
     }
