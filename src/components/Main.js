@@ -73,6 +73,7 @@ function Main(props) {
                        onChange={(e) => {handleFileSubmit(e, props)}}/>
                 <button type="submit">Send Back File</button>
             </form>
+            <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
         </div>
     );
 }
@@ -133,8 +134,14 @@ function handleSendBackFile(e, props){
         data.append('filename', e.target.querySelector("input").files[0].name)
         
         Fetcher.submitFile(data)
+        .then(r => r.json())
         .then(console.log)
     }
+}
+
+function handlePickleReset(e, props){
+    Fetcher.resetPickle()
+    .then(loadGraphData(props))
 }
 
 function mapStateToProps(state){
