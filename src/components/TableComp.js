@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 
 import '../CSS/TableComp.css'
 
+// Expected headers from received data
 const headers = [
     'Transaction History',
     'Date',
@@ -51,7 +52,7 @@ function genHeaders(headers){
 function genRows(props){
     let rows = []
     if(props.data){
-        let data = props.data['data']
+        let data = props.data['table_data']
         let keys = Object.keys(data['Cost']).reverse()
         for (let i = 0; i < keys.length; i++){
             rows.push(
@@ -60,13 +61,8 @@ function genRows(props){
                         switch(header){
                             case "Transaction History":
                                 return <TableCell key={index} align='left'>{data[header][keys[i]]}</TableCell>
-                            case "Date":
-                                let date = new Date(data[header][keys[i]])
-                                return <TableCell key={index} align='right'>{formatTableDate(date)}</TableCell>
-                            case "Type":
-                                return <TableCell key={index} align='right'>{data[header][keys[i]]}</TableCell>
                             default:
-                                return <TableCell key={index} align='right'>{'$' + parseFloat(data[header][keys[i]]).toFixed(2)}</TableCell>
+                                return <TableCell key={index} align='right'>{data[header][keys[i]]}</TableCell>
                         }
                     })}
                 </TableRow>
