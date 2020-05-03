@@ -7,6 +7,8 @@ import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
 import '../CSS/Main.css'
 
+// D3 Functions below set linear scale for line-object styling
+// See 'loadData' function for usage
 const linear = d3.scaleLinear()
     .domain([0, 4])
     .range(["rgb(32,6,162,1)", "rgb(255,171,50,1)"])
@@ -54,6 +56,11 @@ function Main(props) {
     );
 }
 
+// Fetches packaged data from Fetcher class,
+// 'data' key holds full table data for rendering in table-block
+// 'line_data' key holds formatted line graph data from backend
+// 'line_data' is mapped on front-end for compatability with Chart.js library, then saved to state
+// 'line_data is passed to calcProcessed Data for final filters
 function loadData(props){
     let data = Fetcher.getData(props.lineDataColumns)
     data.then((json) => {
@@ -74,6 +81,8 @@ function loadData(props){
     })
 }
 
+// Helps with toggleing filters, accesses data state and sets processed data after applying series filters
+// This is separate from the buit-in filters in the Chart.js library
 function calcProcessedLineData(props, data){
     data = [...data['line_data']]
     if(props.lineDataColumns == "STD"){
@@ -85,11 +94,7 @@ function calcProcessedLineData(props, data){
     props.setProcessedLineData(data)
 }
 
-function handleCSVPrint(event){
-    Fetcher.printCSV()
-    .then(console.log)
-}
-
+// Toggles the columns visible by Chart.js
 function handleToggleTotal(props){
     if(props.lineDataColumns === "STD"){
         props.setLineDataColumns("ALL")
@@ -98,10 +103,17 @@ function handleToggleTotal(props){
     }
 }
 
+// File input is a controlled form, but might not need to be,
+// since sending data to back end doesn't pull from state due to,
+// C:fakepath issues
 function handleFileSubmit(event, props){
     props.setSubmittedFile(event.target.value)
 }
 
+// If a file is submitted, formats a formData Object and inserts the file and filename,
+// then sends this object to the submit_file fetcher
+// Needed to be formatted this way for compatibility with flask
+// On return of file sendback, re-loads data for graph and table with updated data
 function handleSendBackFile(e, props){
     e.preventDefault()
     if(props.submittedFile){
@@ -114,13 +126,8 @@ function handleSendBackFile(e, props){
     }
 }
 
-function handlePickleReset(e, props){
-    Fetcher.resetPickle()
-    .then((r) => {
-        loadData(props)
-    })
-}
-
+//################################################################
+// Redux Functions Below
 function mapStateToProps(state){
     return {
         data: state.data,
@@ -129,7 +136,6 @@ function mapStateToProps(state){
         submittedFile: state.submittedFile
     }
 }
-
 function mapDispatchToProps(dispatch){
     return {
         setData: (data) => {
@@ -157,6 +163,23 @@ function mapDispatchToProps(dispatch){
             })
         }
     }
+}
+
+//##############################################################
+// Testing functions below
+
+// Sends request to re-load data from backup for testing
+function handlePickleReset(e, props){
+    Fetcher.resetPickle()
+    .then((r) => {
+        loadData(props)
+    })
+}
+
+// Prints CSV on backend for testing
+function handleCSVPrint(event){
+    Fetcher.printCSV()
+    .then(console.log)
 }
 
 
