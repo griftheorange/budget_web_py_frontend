@@ -5,20 +5,23 @@ import * as d3 from 'd3'
 import LineComp from '../components/LineComp.js'
 import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
+import '../CSS/Main.css'
 
 const linear = d3.scaleLinear()
     .domain([0, 4])
     .range(["rgb(32,6,162,1)", "rgb(255,171,50,1)"])
-
 const linearOpacity = d3.scaleLinear()
     .domain([0, 4])
     .range(["rgb(32,6,162,0.05)", "rgb(255,171,50,0.05)"])
 
+
 function Main(props) {
+    // Loads Data on mount, then never runs
     useEffect(() => {
         loadData(props)
     }, [])
 
+    // When state lineDataColumns changes, recalcs processed line data for graphing based on data state
     useEffect(() => {
         if(props.data){
             calcProcessedLineData(props, props.data)
@@ -26,20 +29,12 @@ function Main(props) {
     }, [props.lineDataColumns])
 
     return (
-        <div style={{display: "flex"}}>
-            <div style={{width: "65%", height: "50em"}}>
-                <div style={{borderStyle: "solid", 
-                            borderColor: "black", 
-                            borderWidth:"thin", 
-                            width: "100%",
-                            height: "80%"}}>
+        <div className={'window'}>
+            <div className={'graph-block'}>
+                <div className={'bordered line-graph'}>
                     <LineComp/>
                 </div>
-                <div style={{borderStyle: "solid", 
-                            borderColor: "black", 
-                            borderWidth: "thin", 
-                            width: "100%",
-                            height: "20%"}}>
+                <div className={'bordered button-block'}>
                     <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
                     <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
                     <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
@@ -52,10 +47,7 @@ function Main(props) {
                     <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
                 </div>
             </div>
-            <div style={{width: "35%", height: "50em",
-                        borderStyle: "solid",
-                        borderColor: "black",
-                        borderWidth: "thin"}}>
+            <div className={'bordered table-block'}>
 
             </div>
         </div>
