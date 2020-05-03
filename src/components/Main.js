@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import {Line} from 'react-chartjs-2'
 import {Resizable} from 're-resizable'
-import Fetcher from '../adaptors/dataFetcher.js'
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
+
+import LineComp from '../components/LineComp.js'
+import Fetcher from '../adaptors/dataFetcher.js'
 
 const linear = d3.scaleLinear()
     .domain([0, 4])
@@ -25,55 +26,38 @@ function Main(props) {
     }, [props.lineDataColumns])
 
     return (
-        <div style={{width: "100%", height: "50em"}}>
-            <div style={{borderStyle: "solid", 
-                        borderColor: "black", 
-                        borderWidth:"thin", 
-                        width: "80%",
-                        height: "80%"}}>
-            <Line 
-            data={{
-                datasets: props.processedLineData
-            }}
-            options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Amount"
-                        }
-                    }],
-                    xAxes: [{
-                        type: 'linear',
-                        display: true,
-                        ticks: {
-                            callback: function(value){
-                                let date = (new Date(value*1000))
-                                return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
-                            }
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Date"
-                        }
-                    }]
-                }
-            }}
-            />
+        <div style={{display: "flex"}}>
+            <div style={{width: "65%", height: "50em"}}>
+                <div style={{borderStyle: "solid", 
+                            borderColor: "black", 
+                            borderWidth:"thin", 
+                            width: "100%",
+                            height: "80%"}}>
+                    <LineComp/>
+                </div>
+                <div style={{borderStyle: "solid", 
+                            borderColor: "black", 
+                            borderWidth: "thin", 
+                            width: "100%",
+                            height: "20%"}}>
+                    <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
+                    <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
+                    <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
+                        <input type="file" 
+                            value={props.submittedFile ? props.submittedFile : ""} 
+                            accept=".xls,.xlsx,.csv" 
+                            onChange={(e) => {handleFileSubmit(e, props)}}/>
+                        <button type="submit">Send Back File</button>
+                    </form>
+                    <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
+                </div>
             </div>
-            <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
-            <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
-            <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
-                <input type="file" 
-                       value={props.submittedFile ? props.submittedFile : ""} 
-                       accept=".xls,.xlsx,.csv" 
-                       onChange={(e) => {handleFileSubmit(e, props)}}/>
-                <button type="submit">Send Back File</button>
-            </form>
-            <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
+            <div style={{width: "35%", height: "50em",
+                        borderStyle: "solid",
+                        borderColor: "black",
+                        borderWidth: "thin"}}>
+
+            </div>
         </div>
     );
 }
