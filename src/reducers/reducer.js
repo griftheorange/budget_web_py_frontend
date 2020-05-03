@@ -1,14 +1,14 @@
 let initialState = {
     lineDataColumns:"STD",
-    lineData:null,
+    data:null,
     processedLineData:null,
     submittedFile:null
 }
 
 export default function(state=initialState, action){
     switch(action.type){
-        case "SET_LINE_DATA":
-            return {...state, lineData:action.value}
+        case "SET_DATA":
+            return {...state, data:action.value}
         case "SET_SUBMITTED_FILE":
             return {...state, submittedFile:action.value}
         case "SET_LINE_DATA_COLUMNS":

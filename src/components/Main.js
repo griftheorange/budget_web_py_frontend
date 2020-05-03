@@ -5,23 +5,24 @@ import * as d3 from 'd3'
 
 import LineComp from '../components/LineComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
+import { line } from 'd3';
 
 const linear = d3.scaleLinear()
     .domain([0, 4])
-    .range(["rgb(32,6,162,1)", "	rgb(255,171,50,1)"])
+    .range(["rgb(32,6,162,1)", "rgb(255,171,50,1)"])
 
 const linearOpacity = d3.scaleLinear()
     .domain([0, 4])
-    .range(["rgb(32,6,162,0.05)", "	rgb(255,171,50,0.05)"])
+    .range(["rgb(32,6,162,0.05)", "rgb(255,171,50,0.05)"])
 
 function Main(props) {
     useEffect(() => {
-        loadGraphData(props)
+        loadData(props)
     }, [])
 
     useEffect(() => {
-        if(props.lineData){
-            calcProcessedLineData(props, props.lineData)
+        if(props.data){
+            calcProcessedLineData(props, props.data)
         }
     }, [props.lineDataColumns])
 
@@ -62,10 +63,10 @@ function Main(props) {
     );
 }
 
-function loadGraphData(props){
-    let data = Fetcher.getLineGraphData(props.lineDataColumns)
+function loadData(props){
+    let data = Fetcher.getData(props.lineDataColumns)
     data.then((json) => {
-        json = json.map((dataArr, index) => {
+        json['line_data'] = json['line_data'].map((dataArr, index) => {
             return {
                 label: dataArr['header'],
                 data: dataArr['data'],
@@ -77,13 +78,13 @@ function loadGraphData(props){
                 pointRadius: "1"
             }
         })
-        props.setLineData(json)
+        props.setData(json)
         calcProcessedLineData(props, json)
     })
 }
 
 function calcProcessedLineData(props, data){
-    data = [...data]
+    data = [...data['line_data']]
     if(props.lineDataColumns == "STD"){
         let totalIndex = data.indexOf((element) => {
             return element['label'] == "Total Income"
@@ -120,7 +121,7 @@ function handleSendBackFile(e, props){
         Fetcher.submitFile(data)
         .then(r => r.json())
         .then((r) => {
-            loadGraphData(props)
+            loadData(props)
         })
     }
 }
@@ -128,13 +129,13 @@ function handleSendBackFile(e, props){
 function handlePickleReset(e, props){
     Fetcher.resetPickle()
     .then((r) => {
-        loadGraphData(props)
+        loadData(props)
     })
 }
 
 function mapStateToProps(state){
     return {
-        lineData: state.lineData,
+        data: state.data,
         lineDataColumns: state.lineDataColumns,
         processedLineData: state.processedLineData,
         submittedFile: state.submittedFile
@@ -143,9 +144,9 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch){
     return {
-        setLineData: (data) => {
+        setData: (data) => {
             dispatch({
-                type: "SET_LINE_DATA",
+                type: "SET_DATA",
                 value: data
             })
         },

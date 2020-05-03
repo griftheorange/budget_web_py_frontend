@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {Line} from 'react-chartjs-2'
 
 function LineComp(props) {
+    
     return (
         <Line 
             data={{
