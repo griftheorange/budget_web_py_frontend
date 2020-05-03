@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
-import {Resizable} from 're-resizable'
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 
 import LineComp from '../components/LineComp.js'
+import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
-import { line } from 'd3';
 
 const linear = d3.scaleLinear()
     .domain([0, 4])

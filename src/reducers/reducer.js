@@ -1,6 +1,6 @@
 let initialState = {
-    lineDataColumns:"STD",
     data:null,
+    lineDataColumns:"STD",
     processedLineData:null,
     submittedFile:null
 }
