@@ -90,7 +90,7 @@ function loadGraphData(props){
                 pointHoverBackgroundColor: linear(index),
                 pointBorderColor: "rgb(0,0,0,0)",
                 lineTension: 0,
-                pointRadius: "2"
+                pointRadius: "1"
             }
         })
         props.setLineData(json)
@@ -135,13 +135,17 @@ function handleSendBackFile(e, props){
         
         Fetcher.submitFile(data)
         .then(r => r.json())
-        .then(console.log)
+        .then((r) => {
+            loadGraphData(props)
+        })
     }
 }
 
 function handlePickleReset(e, props){
     Fetcher.resetPickle()
-    .then(loadGraphData(props))
+    .then((r) => {
+        loadGraphData(props)
+    })
 }
 
 function mapStateToProps(state){
