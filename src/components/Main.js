@@ -119,10 +119,7 @@ function handleSendBackFile(e, props){
         data.append('filename', e.target.querySelector("input").files[0].name)
         
         Fetcher.submitFile(data)
-        .then(r => r.json())
-        .then((r) => {
-            loadData(props)
-        })
+        .then(r => {loadData(props)})
     }
 }
 
