@@ -10,12 +10,17 @@ div.bordered {
 
 div.graph-block {
     width: 65%;
-    height: 50em;
+    height: 48em;
 }
 
 div.table-block {
     width: 35%;
-    height: 50em;
+    height: 48em;
+    overflow-y: scroll;
+}
+
+div.table-block th,td {
+    border: 1px solid rgba(224, 224, 224, 1);
 }
 
 div.line-graph {

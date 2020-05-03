@@ -50,7 +50,7 @@ function Main(props) {
                 </div>
             </div>
             <div className={'bordered table-block'}>
-
+                <TableComp/>
             </div>
         </div>
     );
