@@ -23,8 +23,8 @@ const headers = [
     'Total Income'
 ]
 
-function TableComp(props) {
 
+function TableComp(props) {
     return (
         <TableContainer component={Paper}>
             <Table size="small" aria-label="simple table">
@@ -41,6 +41,7 @@ function TableComp(props) {
     );
 }
 
+// Uses the headers array to generate array of bolded header cells
 function genHeaders(headers){
     return headers.map((header, index) => {
         return <TableCell style={{fontWeight: "bold"}}
@@ -49,12 +50,16 @@ function genHeaders(headers){
     })
 }
 
+// Generates Rows based on 'table_data' in data state
 function genRows(props){
     let rows = []
     if(props.data){
         let data = props.data['table_data']
         let keys = Object.keys(data['Cost']).reverse()
+        // Iterate through keys ('length' of object)
         for (let i = 0; i < keys.length; i++){
+            // For each row, map through headers returning a TableCell Component
+            // appropriate for that column
             rows.push(
                 <TableRow key={i}>
                     {headers.map((header, index) => {
@@ -72,12 +77,8 @@ function genRows(props){
     return rows
 }
 
-function formatTableDate(dateObj){
-    let month = (dateObj.getMonth() < 10 ? '0' + dateObj.getMonth() : dateObj.getMonth())
-    let date = (dateObj.getDate() < 10 ? '0' + dateObj.getDate() : dateObj.getDate())
-    let year = dateObj.getFullYear()
-    return month+'/'+date+'/'+year
-}
+//####################################################################
+//Redux funcitons below
 
 function mapStateToProps(state){
     return {
