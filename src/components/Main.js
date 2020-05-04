@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
-
 import Sidebar from 'react-sidebar'
+import { Button, Container, Divider, Header } from 'semantic-ui-react'
+
 import LineComp from '../components/LineComp.js'
 import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
@@ -34,7 +35,7 @@ function Main(props) {
     return (
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
-                            <p>Select Value</p>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Select Value</Header>
                             {getSidebarButtons(props)}
                         </div>} 
                  open={props.sidebarOpen} 
@@ -96,21 +97,33 @@ function loadData(props){
 
 function getSidebarButtons(props){
     let buttons = []
+    buttons.push(
+        <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+            <Button size={'mini'} 
+                    inverted={true} 
+                    color={'red'}
+                    style={{marginLeft: '0.5em'}}
+                    onClick={() => {handleSidebarClose('CLOSE', props)}}>X</Button>
+        </Container>
+    )
+    buttons.push(
+        <Container>
+            <Divider/>
+        </Container>
+    ) 
     if(props.data){
         for(let category in props.data['categories']){
             let catString = props.data['categories'][category]
             buttons.push(
-                <div className='sidebar-button-div'>
-                    <button onClick={() => {handleSidebarClose(catString, props)}}>{catString}</button>
-                </div>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button onClick={() => {handleSidebarClose(catString, props)}}
+                            inverted={true}
+                            color={'green'}
+                            style={{margin: 'auto', width: '90%'}}>{catString}</Button>
+                </Container>
             )
         }
     }
-    buttons.push(
-        <div className='sidebar-button-div'>
-            <button onClick={() => {handleSidebarClose('CLOSE', props)}}>CLOSE</button>
-        </div>
-    )
     return buttons
 }
 

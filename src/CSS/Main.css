@@ -34,21 +34,15 @@ div.button-block {
 }
 
 div.sidebar-block {
-    width: 10em;
+    width: 15em;
     height: 100%;
     background-color: white;
 }
 
-div.sidebar-block p {
-    margin: 0;
-    text-align: center;
-    padding: 0.5em
-}
-
-div.sidebar-button-div {
+div.ui-container.sidebar-button-div {
     display: flex;
 }
 
-div.sidebar-button-div * {
+div.ui-container.sidebar-button-div * {
     margin: auto;
 }
