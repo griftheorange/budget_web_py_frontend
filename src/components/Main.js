@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 import Sidebar from 'react-sidebar'
-import { Button, Container, Divider, Header, Form, Card } from 'semantic-ui-react'
+import { Button, Container, Divider, Header, Form } from 'semantic-ui-react'
 
+import DirectoryList from '../components/DirectoryList.js'
 import LineComp from '../components/graphs/LineComp.js'
 import PieComp from '../components/graphs/PieComp.js'
 import TableComp from '../components/TableComp.js'
@@ -281,7 +282,7 @@ function getSaveChangesForm(props){
             </Form>
             <Divider/>
             <Container style={{border: '1px solid black', height: '32em', paddingLeft: '0.5em', paddingRight: '0.5em', overflowY: 'scroll'}}>
-                {genDirectoryList(props)}
+                <DirectoryList/>
             </Container>
         </Container>
     )
@@ -342,26 +343,6 @@ function genSidebarButtons(props){
         }
     }
     return buttons
-}
-
-function genDirectoryList(props){
-    let elements = []
-    if(props.data){
-        for(let key in props.data['resources']){
-            elements.push(<Header>{key}</Header>)
-            elements.push(<Divider/>)
-            for(let i = 0; i < props.data['resources'][key].length; i++){
-                elements.push(
-                    <Card>
-                        <Card.Content>
-                            <Card.Description style={{fontSize: '12px', marginRight: '6px'}}>{props.data['resources'][key][i]}</Card.Description>
-                        </Card.Content>
-                    </Card>
-                )
-            }
-        }
-    }
-    return elements
 }
 
 function handleNewEntrySubmit(event, props){
