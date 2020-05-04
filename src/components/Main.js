@@ -115,11 +115,13 @@ function getSidebarButtons(props){
 }
 
 function handleSidebarClose(category, props){
-    if(props.data['categories'].includes(category)){
+    Fetcher.updateCell(category, props.elementInEdit.dataset.loc)
+    .then((response) => {
+        console.log(response)
         props.elementInEdit.innerHTML = category
-    }
-    props.setElementInEdit(null)
-    props.setSidebarOpen(false)
+        props.setElementInEdit(null)
+        props.setSidebarOpen(false)
+    })
 }
 
 // Helps with toggleing filters, accesses data state and sets processed data after applying series filters

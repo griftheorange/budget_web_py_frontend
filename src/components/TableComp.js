@@ -12,33 +12,25 @@ import { connect } from 'react-redux';
 
 import '../CSS/TableComp.css'
 
-// Expected headers from received data
-const headers = [
-    'Transaction History',
-    'Date',
-    'Type',
-    'Cost',
-    'Checking',
-    'Savings',
-    'Total',
-    'Total Income'
-]
-
 function TableComp(props) {
-    return (
-        <TableContainer component={Paper}>
-            <Table size="small" aria-label="simple table">
-                <TableHead>
-                    <TableRow>
-                        {genHeaders(headers)}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {genRows(props)}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
+    if(props.data){
+        return (
+            <TableContainer component={Paper}>
+                <Table size="small" aria-label="simple table">
+                    <TableHead>
+                        <TableRow>
+                            {genHeaders(props.data['columns'])}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {genRows(props)}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        );
+    } else {
+        return null
+    }
 }
 
 // Uses the headers array to generate array of bolded header cells
@@ -62,7 +54,7 @@ function genRows(props){
             // appropriate for that column
             rows.push(
                 <TableRow key={i}>
-                    {headers.map((header, index) => {
+                    {props.data['columns'].map((header, index) => {
                         switch(header){
                             case "Transaction History":
                                 return (

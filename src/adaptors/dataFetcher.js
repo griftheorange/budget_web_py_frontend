@@ -22,6 +22,21 @@ class DataFetcher {
     static resetPickle(){
         return fetch(`${API_DOMAIN}/reset`)
     }
+
+    static updateCell(category, loc){
+        let locArr = loc.split(',')
+        return fetch(`${API_DOMAIN}/update_cell`, {
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                index: locArr[0],
+                column: locArr[1],
+                category: category
+            })
+        })
+    }
 }
 
 export default DataFetcher
