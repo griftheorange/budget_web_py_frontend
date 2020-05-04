@@ -114,14 +114,29 @@ function getSidebarButtons(props){
     return buttons
 }
 
+// TODO respond to this fetch
 function handleSidebarClose(category, props){
-    Fetcher.updateCell(category, props.elementInEdit.dataset.loc)
-    .then((response) => {
-        console.log(response)
-        props.elementInEdit.innerHTML = category
+    if(category == 'CLOSE'){
         props.setElementInEdit(null)
         props.setSidebarOpen(false)
-    })
+    } else {
+        Fetcher.updateCell(category, props.elementInEdit.dataset.loc)
+        .then(r => r.json())
+        .then((response) => {
+            if(response['status'] == 'Success'){
+                let index = parseInt(response['body']['index'])
+                let column = response['body']['column']
+                let category = response['body']['category']
+                props.data['table_data'][column][index] = category
+                props.elementInEdit.innerHTML = category
+                props.setElementInEdit(null)
+                props.setSidebarOpen(false)
+            } else {
+                props.setElementInEdit(null)
+                props.setSidebarOpen(false)
+            }
+        })
+    }
 }
 
 // Helps with toggleing filters, accesses data state and sets processed data after applying series filters

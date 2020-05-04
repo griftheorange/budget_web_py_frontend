@@ -28,7 +28,8 @@ class DataFetcher {
         return fetch(`${API_DOMAIN}/update_cell`, {
             method:'PATCH',
             headers:{
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Accept':'application/json'
             },
             body: JSON.stringify({
                 index: locArr[0],
