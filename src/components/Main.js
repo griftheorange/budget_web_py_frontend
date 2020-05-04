@@ -4,7 +4,8 @@ import * as d3 from 'd3'
 import Sidebar from 'react-sidebar'
 import { Button, Container, Divider, Header } from 'semantic-ui-react'
 
-import LineComp from '../components/LineComp.js'
+import LineComp from '../components/graphs/LineComp.js'
+import PieComp from '../components/graphs/PieComp.js'
 import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
 import '../CSS/Main.css'
@@ -17,6 +18,12 @@ const linear = d3.scaleLinear()
 const linearOpacity = d3.scaleLinear()
     .domain([0, 4])
     .range(["rgb(32,6,162,0.05)", "rgb(255,171,50,0.05)"])
+const incomePieLinear = d3.scaleLinear()
+    .domain([0, 13])
+    .range(["rgb(153,21,3,1)", "rgb(181,133,56,1)"])
+const spendingsPieLinear = d3.scaleLinear()
+    .domain([0, 10])
+    .range(["rgb(160,207,232,1)", "rgb(34,2,74,1)"])
 
 
 function Main(props) {
@@ -35,11 +42,20 @@ function Main(props) {
                  pullRight={true}>
             <div className={'window'}>
                 <div className={props.fullscreenGraph ? 'graph-block fullscreen' : 'graph-block'}>
-                    <div className={props.fullscreenGraph ? 'bordered line-graph fullscreen' : 'bordered line-graph'} style={{position: 'relative'}}>
+                    <div className={props.fullscreenGraph ? 'bordered graph fullscreen' : 'bordered graph'} style={{position: 'relative'}}>
                         <div style={{position: 'absolute', top:'1em', right: '1em'}}>
                             <Button size={'mini'} icon={'expand arrows alternate'} onClick={props.toggleFullscreenGraph}></Button>
                         </div>
-                        <LineComp/>
+                        <div style={{position: 'absolute', top:'4em', right: '1em'}}>
+                            <Button size={'mini'} icon={'chart line'} onClick={()=>{props.setGraphInView('line_graph')}}></Button>
+                        </div>
+                        <div style={{position: 'absolute', top:'7em', right: '1em'}}>
+                            <Button size={'mini'} icon={'dollar sign'} onClick={()=>{props.setGraphInView('income_pie_graph')}}></Button>
+                        </div>
+                        <div style={{position: 'absolute', top:'10em', right: '1em'}}>
+                            <Button size={'mini'} icon={'arrow alternate circle down'} onClick={()=>{props.setGraphInView('spendings_pie_graph')}}></Button>
+                        </div>
+                        {getGraph(props)}
                     </div>
                     <div className={'bordered button-block'}>
                         <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
@@ -57,7 +73,10 @@ function Main(props) {
                         <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
                     </div>
                 </div>
-                <div className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
+                <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
+                    <div style={{position: 'absolute', top:'1em', right: '1em'}}>
+                        <Button size={'mini'} icon={'refresh'} onClick={() => {loadData(props)}}></Button>
+                    </div>
                     <TableComp/>
                 </div>
             </div>
@@ -86,6 +105,16 @@ function loadData(props){
                 pointRadius: "1"
             }
         })
+        json['income_pie_data']['data'] = [{
+            data: json['income_pie_data']['data'],
+            backgroundColor: genIncomeFills(json['income_pie_data']['labels']),
+            borderWidth: new Array(json['income_pie_data']['labels'].length).fill(0.2)
+        }]
+        json['spendings_pie_data']['data'] = [{
+            data: json['spendings_pie_data']['data'],
+            backgroundColor: genSpendingsFills(json['spendings_pie_data']['labels']),
+            borderWidth: new Array(json['income_pie_data']['labels'].length).fill(0.2)
+        }]
         props.setData(json)
         calcProcessedLineData(props, json)
     })
@@ -96,6 +125,37 @@ function loadData(props){
 function calcProcessedLineData(props, data){
     data = [...data['line_data']]
     props.setProcessedLineData(data)
+}
+
+function genIncomeFills(labels){
+    let colors = []
+    for(let i = 0; i < labels.length; i++){
+        if(labels[i] === "INCOME"){
+            colors.push('rgb(10,76,26,1)')
+        }else{
+            colors.push(incomePieLinear(i))
+        }
+    }
+    return colors
+}
+
+function genSpendingsFills(labels){
+    let colors = []
+    for(let i = 0; i < labels.length; i++){
+        colors.push(spendingsPieLinear(i))
+    }
+    return colors
+}
+
+function getGraph(props){
+    switch(props.graphInView){
+        case "line_graph":
+            return <LineComp/>
+        case "income_pie_graph":
+            return <PieComp pieType={'income_pie_data'}/>
+        case "spendings_pie_graph":
+            return <PieComp pieType={'spendings_pie_data'}/>
+    }
 }
 
 function getSidebarButtons(props){
@@ -199,7 +259,8 @@ function mapStateToProps(state){
         selectedCardType: state.selectedCardType,
         sidebarOpen: state.sidebarOpen,
         elementInEdit: state.elementInEdit,
-        fullscreenGraph: state.fullscreenGraph
+        fullscreenGraph: state.fullscreenGraph,
+        graphInView: state.graphInView
     }
 }
 function mapDispatchToProps(dispatch){
@@ -243,6 +304,12 @@ function mapDispatchToProps(dispatch){
         toggleFullscreenGraph: (element) => {
             dispatch({
                 type: "TOGGLE_FULLSCREEN_GRAPH"
+            })
+        },
+        setGraphInView: (newView) => {
+            dispatch({
+                type: "SET_GRAPH_IN_VIEW",
+                value: newView
             })
         }
     }

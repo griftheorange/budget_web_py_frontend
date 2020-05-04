@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {Line} from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 
 function LineComp(props) {
-    
     return (
         <Line 
             // Line Data pulled from processed data state

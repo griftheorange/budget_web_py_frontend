@@ -6,7 +6,8 @@ let initialState = {
     selectedCardType: "TD",
     sidebarOpen: false,
     elementInEdit:null,
-    fullscreenGraph:false
+    fullscreenGraph:false,
+    graphInView: "line_graph"
 }
 
 export default function(state=initialState, action){
@@ -25,6 +26,8 @@ export default function(state=initialState, action){
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":
             return {...state, fullscreenGraph:!state.fullscreenGraph}
+        case "SET_GRAPH_IN_VIEW":
+            return {...state, graphInView:action.value}
         default:
             return state
     }
