@@ -64,7 +64,7 @@ function LineComp(props) {
 }
 
 function formatDate(date){
-    return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate()
+    return date.getFullYear() + '-' + (date.getMonth() < 10 ? '0'+date.getMonth() : date.getMonth()) + '-' + (date.getDate() < 10 ? '0'+date.getDate() : date.getDate())
 }
 
 function formatNumber(num) {

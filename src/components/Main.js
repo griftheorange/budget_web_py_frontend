@@ -25,13 +25,6 @@ function Main(props) {
         loadData(props)
     }, [])
 
-    // When state lineDataColumns changes, recalcs processed line data for graphing based on data state
-    useEffect(() => {
-        if(props.data){
-            calcProcessedLineData(props, props.data)
-        }
-    }, [props.lineDataColumns])
-
     return (
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
@@ -50,7 +43,6 @@ function Main(props) {
                     </div>
                     <div className={'bordered button-block'}>
                         <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
-                        <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
                         <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
                             <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
                                 <option value='TD'>TD Visa Card</option>
@@ -85,6 +77,7 @@ function loadData(props){
             return {
                 label: dataArr['header'],
                 data: dataArr['data'],
+                hidden: dataArr['header'] === 'Total Income',
                 backgroundColor: linearOpacity(index),
                 pointBackgroundColor: linear(index),
                 pointHoverBackgroundColor: linear(index),
@@ -96,6 +89,13 @@ function loadData(props){
         props.setData(json)
         calcProcessedLineData(props, json)
     })
+}
+
+// Helps with toggleing filters, accesses data state and sets processed data after applying series filters
+// This is separate from the buit-in filters in the Chart.js library
+function calcProcessedLineData(props, data){
+    data = [...data['line_data']]
+    props.setProcessedLineData(data)
 }
 
 function getSidebarButtons(props){
@@ -161,28 +161,6 @@ function handleSidebarClose(category, props){
     }
 }
 
-// Helps with toggleing filters, accesses data state and sets processed data after applying series filters
-// This is separate from the buit-in filters in the Chart.js library
-function calcProcessedLineData(props, data){
-    data = [...data['line_data']]
-    if(props.lineDataColumns == "STD"){
-        let totalIndex = data.indexOf((element) => {
-            return element['label'] == "Total Income"
-        })
-        data.splice(totalIndex, 1)
-    }
-    props.setProcessedLineData(data)
-}
-
-// Toggles the columns visible by Chart.js
-function handleToggleTotal(props){
-    if(props.lineDataColumns === "STD"){
-        props.setLineDataColumns("ALL")
-    } else {
-        props.setLineDataColumns("STD")
-    }
-}
-
 function handleSelectChange(event, props){
     props.setSelectedCardType(event.target.value)
 }
@@ -236,12 +214,6 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_SUBMITTED_FILE",
                 value: file
-            })
-        },
-        setLineDataColumns: (columns) => {
-            dispatch({
-                type: "SET_LINE_DATA_COLUMNS",
-                value: columns
             })
         },
         setProcessedLineData: (data) => {
