@@ -63,6 +63,19 @@ class DataFetcher {
             })
         })
     }
+
+    static requestExportFile(fileTag, filename){
+        return fetch(`${API_DOMAIN}/export_file`, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                filetag:fileTag,
+                filename:filename
+            })
+        })
+    }
 }
 
 export default DataFetcher

@@ -42,15 +42,16 @@ function Main(props) {
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
                  pullRight={false}>
-        {/* Export Excel File Prompt */}
+        {/* Export Excel File Prompt IN PROGRESS*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
-                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Export Excel File</Header>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Export File</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>File will export as .xlsx, .csv, or .p ('pickle') based on the file tag you input</Header.Subheader>
                             {getExportExcelForm(props)}
                         </div>} 
                  open={props.exportExcelFormOpen} 
                  pullRight={false}>
-        {/* Save Changes Prompt IN PROCESS*/}
+        {/* Save Changes Prompt DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Save Changes to Backup</Header>
@@ -95,7 +96,7 @@ function Main(props) {
                     <div className={'bordered button-block'}>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setSaveChangesOpen(true)}}>Save Changes to Backup</Button>
-                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={handleCSVPrint}>Export Excel File</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setExportExcelFormOpen(true)}}>Export File</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={(e) => {handlePickleReset(e, props)}}>Reset From Backup</Button>
                         </Container>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
@@ -290,8 +291,34 @@ function getSaveChangesForm(props){
     return elements
 }
 
-function getExportExcelForm(){
-    return null
+function getExportExcelForm(props){
+    let elements = []
+    elements.push(
+        <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+            <Button size={'mini'} 
+                    inverted={true} 
+                    color={'red'}
+                    style={{marginLeft: '13em'}}
+                    onClick={() => {props.setExportExcelFormOpen(false)}}>X</Button>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Divider/>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Form onSubmit={() => {handleExportRequest(props)}} style={{paddingLeft: '0.5em', paddingRight: '0.5em'}}>
+                <Form.Field>
+                    <label>Export Filename</label>
+                    <input id={'Export_Filename_Input'} defaultValue={`budget_${formattedCurrentDate()}.xlsx`}/>
+                </Form.Field>
+                <Button type='submit'>Submit</Button>
+            </Form>
+        </Container>
+    )
+    return elements
 }
 
 function getResetFromBackupForm(){
@@ -446,6 +473,24 @@ function handleBackupSubmit(props){
     }
 }
 
+function handleExportRequest(props){
+    let filenameInput = document.getElementById('Export_Filename_Input')
+    let filenameArr = filenameInput.value.split('.')
+    let fileTag = filenameArr[filenameArr.length-1]
+    if(['p', 'csv', 'xlsx'].includes(fileTag)){
+        Fetcher.requestExportFile(fileTag, filenameInput.value)
+        .then(r => r.json())
+        .then((response) => {
+            if(response['status'] === 'Success'){
+                //Recieve File TODO
+                filenameInput.value = 'budget_'+formattedCurrentDate()+'.xlsx'
+                props.setExportExcelFormOpen(false)
+                loadData(props)
+            }
+        })
+    }
+}
+
 //################################################################
 // Redux Functions Below
 function mapStateToProps(state){
@@ -528,7 +573,7 @@ function mapDispatchToProps(dispatch){
         },
         setExportExcelFormOpen: (open) => {
             dispatch({
-                type: "SET_SAVE_CHANGES_OPEN",
+                type: "SET_EXPORT_EXCEL_FORM_OPEN",
                 value: open
             })
         },
