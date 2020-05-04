@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 import Sidebar from 'react-sidebar'
-import { Button, Container, Divider, Header } from 'semantic-ui-react'
+import { Button, Container, Divider, Header, Form } from 'semantic-ui-react'
 
 import LineComp from '../components/graphs/LineComp.js'
 import PieComp from '../components/graphs/PieComp.js'
@@ -33,6 +33,13 @@ function Main(props) {
     }, [])
 
     return (
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Insert Entry</Header>
+                            {getNewEntryForm(props)}
+                        </div>} 
+                 open={props.newEntryFormOpen} 
+                 pullRight={true}>
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Select Value</Header>
@@ -77,9 +84,13 @@ function Main(props) {
                     <div style={{position: 'absolute', top:'1em', right: '1em'}}>
                         <Button size={'mini'} icon={'refresh'} onClick={() => {loadData(props)}}></Button>
                     </div>
+                    <div style={{position: 'absolute', top:'4em', right: '1em'}}>
+                        <Button size={'mini'} icon={'plus'} onClick={() => {props.setNewEntryFormOpen(true)}}></Button>
+                    </div>
                     <TableComp/>
                 </div>
             </div>
+        </Sidebar>
         </Sidebar>
     );
 }
@@ -156,6 +167,44 @@ function getGraph(props){
         case "spendings_pie_graph":
             return <PieComp pieType={'spendings_pie_data'}/>
     }
+}
+
+function getNewEntryForm(props){
+    let elements = []
+    elements.push(
+        <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+            <Button size={'mini'} 
+                    inverted={true} 
+                    color={'red'}
+                    style={{marginLeft: '0.5em'}}
+                    onClick={() => {handleSidebarClose('CLOSE', props)}}>X</Button>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Divider/>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Form>
+                <Form.Field>
+                    <label>Transaction History</label>
+                    <input placeholder='Name of Entry'/>
+                </Form.Field>
+                <Form.Field>
+                    <label></label>
+                </Form.Field>
+                <Form.Field>
+                    <label></label>
+                </Form.Field>
+                <Form.Field>
+                    <label></label>
+                </Form.Field>
+            </Form>
+        </Container>
+    )
+    return elements
 }
 
 function getSidebarButtons(props){
@@ -258,6 +307,7 @@ function mapStateToProps(state){
         submittedFile: state.submittedFile,
         selectedCardType: state.selectedCardType,
         sidebarOpen: state.sidebarOpen,
+        newEntryFormOpen: state.newEntryFormOpen,
         elementInEdit: state.elementInEdit,
         fullscreenGraph: state.fullscreenGraph,
         graphInView: state.graphInView
@@ -310,6 +360,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_GRAPH_IN_VIEW",
                 value: newView
+            })
+        },
+        setNewEntryFormOpen: (open) => {
+            dispatch({
+                type: "SET_NEW_ENTRY_FORM_OPEN",
+                value: open
             })
         }
     }

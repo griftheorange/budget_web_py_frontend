@@ -5,6 +5,7 @@ let initialState = {
     submittedFile:null,
     selectedCardType: "TD",
     sidebarOpen: false,
+    newEntryFormOpen: false,
     elementInEdit:null,
     fullscreenGraph:false,
     graphInView: "line_graph"
@@ -22,6 +23,8 @@ export default function(state=initialState, action){
             return {...state, selectedCardType:action.value}
         case "SET_SIDEBAR_OPEN":
             return {...state, sidebarOpen:action.value}
+        case "SET_NEW_ENTRY_FORM_OPEN":
+            return {...state, newEntryFormOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":
