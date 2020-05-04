@@ -6,7 +6,7 @@ let initialState = {
     selectedCardType: "TD",
     sidebarOpen: false,
     elementInEdit:null,
-    fullscreenGraph:'bordered line-graph'
+    fullscreenGraph:false
 }
 
 export default function(state=initialState, action){
@@ -26,11 +26,7 @@ export default function(state=initialState, action){
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":
-            if(state.fullscreenGraph === 'bordered line-graph'){
-                return {...state, fullscreenGraph:'bordered line-graph fullscreen'}
-            } else {
-                return {...state, fullscreenGraph:'bordered line-graph'}
-            }
+            return {...state, fullscreenGraph:!state.fullscreenGraph}
         default:
             return state
     }

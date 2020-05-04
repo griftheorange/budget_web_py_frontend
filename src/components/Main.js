@@ -41,12 +41,12 @@ function Main(props) {
                  open={props.sidebarOpen} 
                  pullRight={true}>
             <div className={'window'}>
-                <div className={'graph-block'}>
-                    <div className={props.fullscreenGraph}>
-                        <LineComp/>
-                        <div style={{position: 'absolute'}}>
-                            <Button size={'mini'}>Toggle Fullscreen</Button>
+                <div className={props.fullscreenGraph ? 'graph-block fullscreen' : 'graph-block'}>
+                    <div className={props.fullscreenGraph ? 'bordered line-graph fullscreen' : 'bordered line-graph'} style={{position: 'relative'}}>
+                        <div style={{position: 'absolute', top:'1em', right: '1em'}}>
+                            <Button size={'mini'} icon={'expand arrows alternate'} onClick={props.toggleFullscreenGraph}></Button>
                         </div>
+                        <LineComp/>
                     </div>
                     <div className={'bordered button-block'}>
                         <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
@@ -65,7 +65,7 @@ function Main(props) {
                         <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
                     </div>
                 </div>
-                <div className={'bordered table-block'}>
+                <div className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
                     <TableComp/>
                 </div>
             </div>
@@ -266,6 +266,11 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_ELEMENT_IN_EDIT",
                 value: element
+            })
+        },
+        toggleFullscreenGraph: (element) => {
+            dispatch({
+                type: "TOGGLE_FULLSCREEN_GRAPH"
             })
         }
     }
