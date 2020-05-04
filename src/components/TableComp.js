@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { connect } from 'react-redux';
+import React from 'react';
+
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,6 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+
+import { connect } from 'react-redux';
 
 import '../CSS/TableComp.css'
 
@@ -22,25 +23,6 @@ const headers = [
     'Total',
     'Total Income'
 ]
-const typeCategories = [
-    'BUSINESS',
-    'DINING',
-    'ENTERTAINMENT',
-    'GAS',
-    'GROCERY',
-    'HEALTHCARE',
-    'INCOME',
-    'RENT',
-    'SCHOOL',
-    'SHOPPING',
-    'TAX',
-    'TRANSFER',
-    'TRAVEL',
-    'UNTRACKED',
-    'UTILITIES',
-    'UTILITY'
-]
-
 
 function TableComp(props) {
     return (
@@ -96,8 +78,7 @@ function genRows(props){
                                     <TableCell data-loc={[keys[i], header]} 
                                                key={index} 
                                                align='right' 
-                                               onClick={typeCategories.includes(cellValue) ? null : handleOnClick} 
-                                               onBlur={typeCategories.includes(cellValue) ? null : handleOnBlur}>
+                                               onClick={props.data['categories'].includes(cellValue) ? null : (e) => {handleOnClick(e, props)}}>
                                         {cellValue}
                                     </TableCell>
                                 )
@@ -119,14 +100,9 @@ function genRows(props){
 }
 
 // Responds to click event for single table cell
-function handleOnClick(event){
-    event.target.setAttribute('contenteditable', 'true')
-    event.target.focus()
-}
-
-function handleOnBlur(event){
-    event.target.setAttribute('contenteditable', 'false')
-    console.log('focus left')
+function handleOnClick(event, props){
+    props.setElementInEdit(event.target)
+    props.setSidebarOpen(true)
 }
 
 //####################################################################
@@ -139,7 +115,26 @@ function mapStateToProps(state){
 }
 
 function mapDispatchToProps(dispatch){
-    return {}
+    return {
+        setSidebarOpen: (open) => {
+            dispatch({
+                type: "SET_SIDEBAR_OPEN",
+                value: open
+            })
+        },
+        setElementInEdit: (element) => {
+            dispatch({
+                type: "SET_ELEMENT_IN_EDIT",
+                value: element
+            })
+        },
+        setListenerInEdit: (listener) => {
+            dispatch({
+                type: "SET_LISTENER_IN_EDIT",
+                value: listener
+            })
+        }
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableComp);

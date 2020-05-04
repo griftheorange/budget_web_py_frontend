@@ -3,7 +3,9 @@ let initialState = {
     lineDataColumns:"STD",
     processedLineData:null,
     submittedFile:null,
-    selectedCardType: "TD"
+    selectedCardType: "TD",
+    sidebarOpen: false,
+    elementInEdit:null
 }
 
 export default function(state=initialState, action){
@@ -18,6 +20,10 @@ export default function(state=initialState, action){
             return {...state, processedLineData:action.value}
         case "SET_SELECTED_CARD_TYPE":
             return {...state, selectedCardType:action.value}
+        case "SET_SIDEBAR_OPEN":
+            return {...state, sidebarOpen:action.value}
+        case "SET_ELEMENT_IN_EDIT":
+            return {...state, elementInEdit:action.value}
         default:
             return state
     }

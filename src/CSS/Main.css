@@ -32,3 +32,23 @@ div.button-block {
     width: 100%;
     height: 20%;
 }
+
+div.sidebar-block {
+    width: 10em;
+    height: 100%;
+    background-color: white;
+}
+
+div.sidebar-block p {
+    margin: 0;
+    text-align: center;
+    padding: 0.5em
+}
+
+div.sidebar-button-div {
+    display: flex;
+}
+
+div.sidebar-button-div * {
+    margin: auto;
+}

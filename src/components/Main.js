@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 
+import Sidebar from 'react-sidebar'
 import LineComp from '../components/LineComp.js'
 import TableComp from '../components/TableComp.js'
 import Fetcher from '../adaptors/dataFetcher.js'
@@ -31,32 +32,40 @@ function Main(props) {
     }, [props.lineDataColumns])
 
     return (
-        <div className={'window'}>
-            <div className={'graph-block'}>
-                <div className={'bordered line-graph'}>
-                    <LineComp/>
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <p>Select Value</p>
+                            {getSidebarButtons(props)}
+                        </div>} 
+                 open={props.sidebarOpen} 
+                 pullRight={true}>
+            <div className={'window'}>
+                <div className={'graph-block'}>
+                    <div className={'bordered line-graph'}>
+                        <LineComp/>
+                    </div>
+                    <div className={'bordered button-block'}>
+                        <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
+                        <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
+                        <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
+                            <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
+                                <option value='TD'>TD Visa Card</option>
+                                <option value='Discover'>Discover IT Card</option>
+                            </select>
+                            <input type="file" 
+                                value={props.submittedFile ? props.submittedFile : ""} 
+                                accept=".xls,.xlsx,.csv" 
+                                onChange={(e) => {handleFileSubmit(e, props)}}/>
+                            <button type="submit">Send Back File</button>
+                        </form>
+                        <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
+                    </div>
                 </div>
-                <div className={'bordered button-block'}>
-                    <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
-                    <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
-                    <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
-                        <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
-                            <option value='TD'>TD Visa Card</option>
-                            <option value='Discover'>Discover IT Card</option>
-                        </select>
-                        <input type="file" 
-                            value={props.submittedFile ? props.submittedFile : ""} 
-                            accept=".xls,.xlsx,.csv" 
-                            onChange={(e) => {handleFileSubmit(e, props)}}/>
-                        <button type="submit">Send Back File</button>
-                    </form>
-                    <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
+                <div className={'bordered table-block'}>
+                    <TableComp/>
                 </div>
             </div>
-            <div className={'bordered table-block'}>
-                <TableComp/>
-            </div>
-        </div>
+        </Sidebar>
     );
 }
 
@@ -83,6 +92,34 @@ function loadData(props){
         props.setData(json)
         calcProcessedLineData(props, json)
     })
+}
+
+function getSidebarButtons(props){
+    let buttons = []
+    if(props.data){
+        for(let category in props.data['categories']){
+            let catString = props.data['categories'][category]
+            buttons.push(
+                <div className='sidebar-button-div'>
+                    <button onClick={() => {handleSidebarClose(catString, props)}}>{catString}</button>
+                </div>
+            )
+        }
+    }
+    buttons.push(
+        <div className='sidebar-button-div'>
+            <button onClick={() => {handleSidebarClose('CLOSE', props)}}>CLOSE</button>
+        </div>
+    )
+    return buttons
+}
+
+function handleSidebarClose(category, props){
+    if(props.data['categories'].includes(category)){
+        props.elementInEdit.innerHTML = category
+    }
+    props.setElementInEdit(null)
+    props.setSidebarOpen(false)
 }
 
 // Helps with toggleing filters, accesses data state and sets processed data after applying series filters
@@ -142,7 +179,9 @@ function mapStateToProps(state){
         lineDataColumns: state.lineDataColumns,
         processedLineData: state.processedLineData,
         submittedFile: state.submittedFile,
-        selectedCardType: state.selectedCardType
+        selectedCardType: state.selectedCardType,
+        sidebarOpen: state.sidebarOpen,
+        elementInEdit: state.elementInEdit
     }
 }
 function mapDispatchToProps(dispatch){
@@ -175,6 +214,18 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_SELECTED_CARD_TYPE",
                 value: type
+            })
+        },
+        setSidebarOpen: (open) => {
+            dispatch({
+                type: "SET_SIDEBAR_OPEN",
+                value: open
+            })
+        },
+        setElementInEdit: (element) => {
+            dispatch({
+                type: "SET_ELEMENT_IN_EDIT",
+                value: element
             })
         }
     }
