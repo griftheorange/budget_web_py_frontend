@@ -22,6 +22,24 @@ const headers = [
     'Total',
     'Total Income'
 ]
+const typeCategories = [
+    'BUSINESS',
+    'DINING',
+    'ENTERTAINMENT',
+    'GAS',
+    'GROCERY',
+    'HEALTHCARE',
+    'INCOME',
+    'RENT',
+    'SCHOOL',
+    'SHOPPING',
+    'TAX',
+    'TRANSFER',
+    'TRAVEL',
+    'UNTRACKED',
+    'UTILITIES',
+    'UTILITY'
+]
 
 
 function TableComp(props) {
@@ -65,9 +83,32 @@ function genRows(props){
                     {headers.map((header, index) => {
                         switch(header){
                             case "Transaction History":
-                                return <TableCell key={index} align='left'>{data[header][keys[i]]}</TableCell>
+                                return (
+                                    <TableCell data-loc={[keys[i], header]} 
+                                               key={index} 
+                                               align='left'>
+                                        {data[header][keys[i]]}
+                                    </TableCell>
+                                )
+                            case "Type":
+                                let cellValue = data[header][keys[i]]
+                                return (
+                                    <TableCell data-loc={[keys[i], header]} 
+                                               key={index} 
+                                               align='right' 
+                                               onClick={typeCategories.includes(cellValue) ? null : handleOnClick} 
+                                               onBlur={typeCategories.includes(cellValue) ? null : handleOnBlur}>
+                                        {cellValue}
+                                    </TableCell>
+                                )
                             default:
-                                return <TableCell key={index} align='right'>{data[header][keys[i]]}</TableCell>
+                                return (
+                                    <TableCell data-loc={[keys[i], header]} 
+                                               key={index} 
+                                               align='right'>
+                                        {data[header][keys[i]]}
+                                    </TableCell>
+                                )
                         }
                     })}
                 </TableRow>
@@ -75,6 +116,17 @@ function genRows(props){
         }
     }
     return rows
+}
+
+// Responds to click event for single table cell
+function handleOnClick(event){
+    event.target.setAttribute('contenteditable', 'true')
+    event.target.focus()
+}
+
+function handleOnBlur(event){
+    event.target.setAttribute('contenteditable', 'false')
+    console.log('focus left')
 }
 
 //####################################################################

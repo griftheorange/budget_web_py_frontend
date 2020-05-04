@@ -37,7 +37,7 @@ function Main(props) {
                     <LineComp/>
                 </div>
                 <div className={'bordered button-block'}>
-                    <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
+                    <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
                     <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
                     <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
                         <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
