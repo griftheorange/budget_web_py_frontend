@@ -127,7 +127,13 @@ function handleSidebarClose(category, props){
                 let index = parseInt(response['body']['index'])
                 let column = response['body']['column']
                 let category = response['body']['category']
-                props.data['table_data'][column][index] = category
+                // Below is 'proper' way to update the cell by modifying state
+                // But it ends up being MUCH slower and effectively the same. Will make note in
+                // case it becomes necessary later, but for now I won't use it
+                //#############################
+                // let newData = {...props.data}
+                // newData['table_data'][column][index] = category
+                // props.setData(newData)
                 props.elementInEdit.innerHTML = category
                 props.setElementInEdit(null)
                 props.setSidebarOpen(false)
