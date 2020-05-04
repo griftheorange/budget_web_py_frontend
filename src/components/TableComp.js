@@ -38,7 +38,7 @@ function genHeaders(headers){
     return headers.map((header, index) => {
         return <TableCell style={{fontWeight: "bold"}}
                           key={index} 
-                          align={index < 1 ? 'left' : 'right'}>{header == "Date" ? "Date MM/DD/YY" : header}</TableCell>
+                          align={index < 1 ? 'left' : 'right'}>{header === "Date" ? "Date MM/DD/YY" : header}</TableCell>
     })
 }
 

@@ -42,8 +42,11 @@ function Main(props) {
                  pullRight={true}>
             <div className={'window'}>
                 <div className={'graph-block'}>
-                    <div className={'bordered line-graph'}>
+                    <div className={props.fullscreenGraph}>
                         <LineComp/>
+                        <div style={{position: 'absolute'}}>
+                            <Button size={'mini'}>Toggle Fullscreen</Button>
+                        </div>
                     </div>
                     <div className={'bordered button-block'}>
                         <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
@@ -129,16 +132,16 @@ function getSidebarButtons(props){
 
 // TODO respond to this fetch
 function handleSidebarClose(category, props){
-    if(category == 'CLOSE'){
+    if(category === 'CLOSE'){
         props.setElementInEdit(null)
         props.setSidebarOpen(false)
     } else {
         Fetcher.updateCell(category, props.elementInEdit.dataset.loc)
         .then(r => r.json())
         .then((response) => {
-            if(response['status'] == 'Success'){
-                let index = parseInt(response['body']['index'])
-                let column = response['body']['column']
+            if(response['status'] === 'Success'){
+                // let index = parseInt(response['body']['index'])
+                // let column = response['body']['column']
                 let category = response['body']['category']
                 // Below is 'proper' way to update the cell by modifying state
                 // But it ends up being MUCH slower and effectively the same. Will make note in
@@ -217,7 +220,8 @@ function mapStateToProps(state){
         submittedFile: state.submittedFile,
         selectedCardType: state.selectedCardType,
         sidebarOpen: state.sidebarOpen,
-        elementInEdit: state.elementInEdit
+        elementInEdit: state.elementInEdit,
+        fullscreenGraph: state.fullscreenGraph
     }
 }
 function mapDispatchToProps(dispatch){
