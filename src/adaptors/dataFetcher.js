@@ -38,6 +38,17 @@ class DataFetcher {
             })
         })
     }
+
+    static patchNewEntry(json){
+        return fetch(`${API_DOMAIN}/new_entry`, {
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify(json)
+        })
+    }
 }
 
 export default DataFetcher

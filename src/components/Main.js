@@ -177,7 +177,7 @@ function getNewEntryForm(props){
                     inverted={true} 
                     color={'red'}
                     style={{marginLeft: '0.5em'}}
-                    onClick={() => {handleSidebarClose('CLOSE', props)}}>X</Button>
+                    onClick={() => {props.setNewEntryFormOpen(false)}}>X</Button>
         </Container>
     )
     elements.push(
@@ -185,26 +185,49 @@ function getNewEntryForm(props){
             <Divider/>
         </Container>
     )
+    let date = formattedCurrentDate()
     elements.push(
         <Container>
-            <Form>
-                <Form.Field>
+            <Form onSubmit={(e)=>{handleNewEntrySubmit(e, props)}}>
+                <Form.Field style={{margin: 0, padding: '0.5em'}}>
                     <label>Transaction History</label>
-                    <input placeholder='Name of Entry'/>
+                    <input id={'Transaction_History_Input'} placeholder='Name of Entry'/>
                 </Form.Field>
-                <Form.Field>
-                    <label></label>
+                <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                    <label>Date</label>
+                    <input id={'Date_Input'} type='date' defaultValue={date}/>
                 </Form.Field>
-                <Form.Field>
-                    <label></label>
+                <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                    <label>Type</label>
+                    <select defaultValue="" id={'Type_Input'} >
+                        {props.data ? genOptions(props.data['categories']) : null}
+                    </select>
                 </Form.Field>
-                <Form.Field>
-                    <label></label>
+                <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                    <label>Cost</label>
+                    <input id={'Cost_Input'} type='number'/>
                 </Form.Field>
+                <Divider/>
+                <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>
             </Form>
         </Container>
     )
     return elements
+}
+
+function formattedCurrentDate(){
+    let date = new Date(Date.now())
+    date = date.getFullYear()+'-'+((date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : (date.getMonth()+1))+'-'+(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())
+    return date
+}
+
+function genOptions(cats){
+    let options = []
+    options.push(<option value=""></option>)
+    for(let i = 0; i < cats.length; i++){
+        options.push(<option value={cats[i]}>{cats[i]}</option>)
+    }
+    return options
 }
 
 function getSidebarButtons(props){
@@ -239,7 +262,32 @@ function getSidebarButtons(props){
     return buttons
 }
 
-// TODO respond to this fetch
+function handleNewEntrySubmit(event, props){
+    let th = document.getElementById("Transaction_History_Input").value
+    let date = document.getElementById("Date_Input").value
+    let type = document.getElementById("Type_Input").value
+    let cost = document.getElementById("Cost_Input").value
+    if(th && date && cost){
+        let json = {
+            th:th,
+            date:date,
+            type:type,
+            cost:cost
+        }
+        Fetcher.patchNewEntry(json)
+        .then(r => r.json())
+        .then((response) => {
+            if(response.status === 'Success'){
+                th.value = null
+                date.value = formattedCurrentDate()
+                type.value = ""
+                cost.value = null
+                props.setNewEntryFormOpen(false)
+            }
+        })
+    }
+}
+
 function handleSidebarClose(category, props){
     if(category === 'CLOSE'){
         props.setElementInEdit(null)
