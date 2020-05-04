@@ -49,6 +49,19 @@ class DataFetcher {
             body: JSON.stringify(json)
         })
     }
+
+    static saveBackupAs(fileTag){
+        return fetch(`${API_DOMAIN}/save_backup`, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify({
+                filetag:filetag
+            })
+        })
+    }
 }
 
 export default DataFetcher

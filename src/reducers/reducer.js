@@ -6,6 +6,9 @@ let initialState = {
     selectedCardType: "TD",
     sidebarOpen: false,
     newEntryFormOpen: false,
+    saveChangesOpen: true,
+    exportExcelFormOpen: false,
+    resetFromBackupFormOpen: false,
     elementInEdit:null,
     fullscreenGraph:false,
     graphInView: "line_graph"
@@ -25,6 +28,8 @@ export default function(state=initialState, action){
             return {...state, sidebarOpen:action.value}
         case "SET_NEW_ENTRY_FORM_OPEN":
             return {...state, newEntryFormOpen:action.value}
+        case "SET_SAVE_CHANGES_OPEN":
+            return {...state, saveChangesOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 import * as d3 from 'd3'
 import Sidebar from 'react-sidebar'
-import { Button, Container, Divider, Header, Form } from 'semantic-ui-react'
+import { Button, Container, Divider, Header, Form, Card } from 'semantic-ui-react'
 
 import LineComp from '../components/graphs/LineComp.js'
 import PieComp from '../components/graphs/PieComp.js'
@@ -33,6 +33,32 @@ function Main(props) {
     }, [])
 
     return (
+        // Reset from Backup File Prompt
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Reset From Backup</Header>
+                            {getResetFromBackupForm(props)}
+                        </div>} 
+                 open={props.resetFromBackupFormOpen} 
+                 pullRight={false}>
+        {/* Export Excel File Prompt */}
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Export Excel File</Header>
+                            {getExportExcelForm(props)}
+                        </div>} 
+                 open={props.exportExcelFormOpen} 
+                 pullRight={false}>
+        {/* Save Changes Prompt IN PROCESS*/}
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Save Changes to Backup</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Files with the same name will overwrite on backend</Header.Subheader>
+                            {getSaveChangesForm(props)}
+                        </div>} 
+                 open={props.saveChangesOpen} 
+                 pullRight={false}>
+        {/* New Table Entry Sidebar DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Insert Entry</Header>
@@ -40,10 +66,11 @@ function Main(props) {
                         </div>} 
                  open={props.newEntryFormOpen} 
                  pullRight={true}>
+        {/* Update Cell in Type Column Sidebar DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Select Value</Header>
-                            {getSidebarButtons(props)}
+                            {genSidebarButtons(props)}
                         </div>} 
                  open={props.sidebarOpen} 
                  pullRight={true}>
@@ -66,9 +93,9 @@ function Main(props) {
                     </div>
                     <div className={'bordered button-block'}>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
-                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={handleCSVPrint}>Save Changes to Backup</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setSaveChangesOpen(true)}}>Save Changes to Backup</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={handleCSVPrint}>Export Excel File</Button>
-                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={(e) => {handlePickleReset(e, props)}}>Reset From Backup</Button>
                         </Container>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
                             <Form style={{margin: '1em'}}encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
@@ -99,6 +126,9 @@ function Main(props) {
                     <TableComp/>
                 </div>
             </div>
+        </Sidebar>
+        </Sidebar>
+        </Sidebar>
         </Sidebar>
         </Sidebar>
     );
@@ -224,6 +254,49 @@ function getNewEntryForm(props){
     return elements
 }
 
+function getSaveChangesForm(props){
+    let elements = []
+    elements.push(
+        <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+            <Button size={'mini'} 
+                    inverted={true} 
+                    color={'red'}
+                    style={{marginLeft: '13em'}}
+                    onClick={() => {props.setSaveChangesOpen(false)}}>X</Button>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Divider/>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Form onSubmit={() => {handleBackupSubmit(props)}} style={{paddingLeft: '0.5em', paddingRight: '0.5em'}}>
+                <Form.Field>
+                    <label>Filename To be Saved</label>
+                    <input id={'Backup_Filename_Input'} defaultValue={`backup_${formattedCurrentDate()}.p`}/>
+                </Form.Field>
+                <Button type='submit'>Submit</Button>
+            </Form>
+            <Divider/>
+            <Container style={{border: '1px solid black', height: '32em', paddingLeft: '0.5em', paddingRight: '0.5em', overflowY: 'scroll'}}>
+                {genDirectoryList(props)}
+            </Container>
+        </Container>
+    )
+    let date = new Date(Date.now())
+    return elements
+}
+
+function getExportExcelForm(){
+    return null
+}
+
+function getResetFromBackupForm(){
+    return null
+}
+
 function formattedCurrentDate(){
     let date = new Date(Date.now())
     date = date.getFullYear()+'-'+((date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : (date.getMonth()+1))+'-'+(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())
@@ -239,7 +312,7 @@ function genOptions(cats){
     return options
 }
 
-function getSidebarButtons(props){
+function genSidebarButtons(props){
     let buttons = []
     buttons.push(
         <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -269,6 +342,26 @@ function getSidebarButtons(props){
         }
     }
     return buttons
+}
+
+function genDirectoryList(props){
+    let elements = []
+    if(props.data){
+        for(let key in props.data['resources']){
+            elements.push(<Header>{key}</Header>)
+            elements.push(<Divider/>)
+            for(let i = 0; i < props.data['resources'][key].length; i++){
+                elements.push(
+                    <Card>
+                        <Card.Content>
+                            <Card.Description style={{fontSize: '12px', marginRight: '6px'}}>{props.data['resources'][key][i]}</Card.Description>
+                        </Card.Content>
+                    </Card>
+                )
+            }
+        }
+    }
+    return elements
 }
 
 function handleNewEntrySubmit(event, props){
@@ -355,6 +448,23 @@ function handleSendBackFile(e, props){
     }
 }
 
+function handleBackupSubmit(props){
+    let filenameInput = document.getElementById('Backup_Filename_Input')
+    let filenameArr = filenameInput.value.split('.')
+    let fileTag = filenameArr[filenameArr.length-1]
+    if(['p', 'csv', 'xlsx'].includes(fileTag)){
+        Fetcher.saveBackupAs(fileTag)
+        .then(r => r.json())
+        .then((response) => {
+            if(response['status'] === 'Success'){
+                filenameInput.value = formattedCurrentDate()
+                props.setSaveChangesOpen(false)
+                loadData(props)
+            }
+        })
+    }
+}
+
 //################################################################
 // Redux Functions Below
 function mapStateToProps(state){
@@ -366,6 +476,9 @@ function mapStateToProps(state){
         selectedCardType: state.selectedCardType,
         sidebarOpen: state.sidebarOpen,
         newEntryFormOpen: state.newEntryFormOpen,
+        saveChangesOpen: state.saveChangesOpen,
+        exportExcelFormOpen: state.exportExcelFormOpen,
+        resetFromBackupFormOpen: state.resetFromBackupFormOpen,
         elementInEdit: state.elementInEdit,
         fullscreenGraph: state.fullscreenGraph,
         graphInView: state.graphInView
@@ -423,6 +536,24 @@ function mapDispatchToProps(dispatch){
         setNewEntryFormOpen: (open) => {
             dispatch({
                 type: "SET_NEW_ENTRY_FORM_OPEN",
+                value: open
+            })
+        },
+        setSaveChangesOpen: (open) => {
+            dispatch({
+                type: "SET_SAVE_CHANGES_OPEN",
+                value: open
+            })
+        },
+        setExportExcelFormOpen: (open) => {
+            dispatch({
+                type: "SET_SAVE_CHANGES_OPEN",
+                value: open
+            })
+        },
+        setResetFromBackupFormOpen: (open) => {
+            dispatch({
+                type: "SET_RESET_FROM_BACKUP_FORM_OPEN",
                 value: open
             })
         }
