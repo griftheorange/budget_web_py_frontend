@@ -205,7 +205,7 @@ function getNewEntryForm(props){
                 </Form.Field>
                 <Form.Field style={{margin: 0, padding: '0.5em'}}>
                     <label>Cost</label>
-                    <input id={'Cost_Input'} type='number'/>
+                    <input id={'Cost_Input'} type='number' step='0.01'/>
                 </Form.Field>
                 <Divider/>
                 <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>

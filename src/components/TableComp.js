@@ -61,7 +61,7 @@ function genRows(props){
                                     <TableCell data-loc={[keys[i], header]} 
                                                key={index} 
                                                align='left'>
-                                        {data[header][keys[i]]}
+                                        {keys[i]+': '+data[header][keys[i]]}
                                     </TableCell>
                                 )
                             case "Type":
