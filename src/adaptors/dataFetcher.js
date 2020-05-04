@@ -50,7 +50,7 @@ class DataFetcher {
         })
     }
 
-    static saveBackupAs(fileTag){
+    static saveBackupAs(fileTag, filename){
         return fetch(`${API_DOMAIN}/save_backup`, {
             method:'POST',
             headers:{
@@ -58,7 +58,8 @@ class DataFetcher {
                 'Accept':'application/json'
             },
             body: JSON.stringify({
-                filetag:filetag
+                filetag:fileTag,
+                filename:filename
             })
         })
     }

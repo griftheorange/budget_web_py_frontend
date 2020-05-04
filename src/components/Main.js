@@ -453,11 +453,11 @@ function handleBackupSubmit(props){
     let filenameArr = filenameInput.value.split('.')
     let fileTag = filenameArr[filenameArr.length-1]
     if(['p', 'csv', 'xlsx'].includes(fileTag)){
-        Fetcher.saveBackupAs(fileTag)
+        Fetcher.saveBackupAs(fileTag, filenameInput.value)
         .then(r => r.json())
         .then((response) => {
             if(response['status'] === 'Success'){
-                filenameInput.value = formattedCurrentDate()
+                filenameInput.value = 'backup_'+formattedCurrentDate()+'.p'
                 props.setSaveChangesOpen(false)
                 loadData(props)
             }
