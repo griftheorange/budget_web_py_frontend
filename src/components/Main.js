@@ -263,16 +263,16 @@ function getSidebarButtons(props){
 }
 
 function handleNewEntrySubmit(event, props){
-    let th = document.getElementById("Transaction_History_Input").value
-    let date = document.getElementById("Date_Input").value
-    let type = document.getElementById("Type_Input").value
-    let cost = document.getElementById("Cost_Input").value
-    if(th && date && cost){
+    let th = document.getElementById("Transaction_History_Input")
+    let date = document.getElementById("Date_Input")
+    let type = document.getElementById("Type_Input")
+    let cost = document.getElementById("Cost_Input")
+    if(th.value && date.value && cost.value){
         let json = {
-            th:th,
-            date:date,
-            type:type,
-            cost:cost
+            th:th.value,
+            date:date.value,
+            type:type.value,
+            cost:cost.value
         }
         Fetcher.patchNewEntry(json)
         .then(r => r.json())
@@ -283,6 +283,7 @@ function handleNewEntrySubmit(event, props){
                 type.value = ""
                 cost.value = null
                 props.setNewEntryFormOpen(false)
+                loadData(props)
             }
         })
     }
