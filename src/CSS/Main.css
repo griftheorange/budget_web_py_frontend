@@ -36,6 +36,10 @@ div.table-block.fullscreen {
     transition: height 0.5s;
 }
 
+div.button-block {
+    display: flex;
+}
+
 div.table-block th,td {
     border: 1px solid rgba(224, 224, 224, 1);
 }

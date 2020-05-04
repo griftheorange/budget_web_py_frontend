@@ -44,7 +44,6 @@ function LineComp(props) {
                             return d['datasets'][t[0]['datasetIndex']]['label']
                         },
                         afterTitle: function(t, d){
-                            console.log(t,d)
                             return d['datasets'][t[0]['datasetIndex']]['data'][t[0]['index']]['name']
                         },
                         beforeBody: function(t, d){

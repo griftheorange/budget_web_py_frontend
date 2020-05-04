@@ -65,19 +65,28 @@ function Main(props) {
                         {getGraph(props)}
                     </div>
                     <div className={'bordered button-block'}>
-                        <button onClick={handleCSVPrint}>Print Test CSV Backend</button>
-                        <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
-                            <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
-                                <option value='TD'>TD Visa Card</option>
-                                <option value='Discover'>Discover IT Card</option>
-                            </select>
-                            <input type="file" 
-                                value={props.submittedFile ? props.submittedFile : ""} 
-                                accept=".xls,.xlsx,.csv" 
-                                onChange={(e) => {handleFileSubmit(e, props)}}/>
-                            <button type="submit">Send Back File</button>
-                        </form>
-                        <button onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</button>
+                        <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={handleCSVPrint}>Save Changes to Backup</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={handleCSVPrint}>Export Excel File</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={(e) => {handlePickleReset(e, props)}}>Reset Pickle</Button>
+                        </Container>
+                        <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
+                            <Form style={{margin: '1em'}}encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
+                                <Form.Field>
+                                <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
+                                    <option value='TD'>TD Visa Card</option>
+                                    <option value='Discover'>Discover IT Card</option>
+                                </select>
+                                </Form.Field>
+                                <Form.Field>
+                                <input type="file" 
+                                    value={props.submittedFile ? props.submittedFile : ""} 
+                                    accept=".xls,.xlsx,.csv" 
+                                    onChange={(e) => {handleFileSubmit(e, props)}}/>
+                                </Form.Field>
+                                <Button type="submit">Send Back File</Button>
+                            </Form>
+                        </Container>
                     </div>
                 </div>
                 <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
