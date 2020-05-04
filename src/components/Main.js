@@ -40,6 +40,10 @@ function Main(props) {
                     <button onClick={handleCSVPrint}>Print Test CSV Bakcend</button>
                     <button onClick={() => {handleToggleTotal(props)}}>Toggle Total</button>
                     <form encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
+                        <select value={props.selectedCardType} onChange={(e) => {handleSelectChange(e, props)}}>
+                            <option value='TD'>TD Visa Card</option>
+                            <option value='Discover'>Discover IT Card</option>
+                        </select>
                         <input type="file" 
                             value={props.submittedFile ? props.submittedFile : ""} 
                             accept=".xls,.xlsx,.csv" 
@@ -103,6 +107,10 @@ function handleToggleTotal(props){
     }
 }
 
+function handleSelectChange(event, props){
+    props.setSelectedCardType(event.target.value)
+}
+
 // File input is a controlled form, but might not need to be,
 // since sending data to back end doesn't pull from state due to,
 // C:fakepath issues
@@ -121,7 +129,7 @@ function handleSendBackFile(e, props){
         data.append('file', e.target.querySelector("input").files[0])
         data.append('filename', e.target.querySelector("input").files[0].name)
         
-        Fetcher.submitFile(data)
+        Fetcher.submitFile(data, props.selectedCardType)
         .then(r => {loadData(props)})
     }
 }
@@ -133,7 +141,8 @@ function mapStateToProps(state){
         data: state.data,
         lineDataColumns: state.lineDataColumns,
         processedLineData: state.processedLineData,
-        submittedFile: state.submittedFile
+        submittedFile: state.submittedFile,
+        selectedCardType: state.selectedCardType
     }
 }
 function mapDispatchToProps(dispatch){
@@ -160,6 +169,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_PROCESSED_LINE_DATA",
                 value: data
+            })
+        },
+        setSelectedCardType: (type) => {
+            dispatch({
+                type: "SET_SELECTED_CARD_TYPE",
+                value: type
             })
         }
     }

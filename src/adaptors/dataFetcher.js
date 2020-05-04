@@ -8,9 +8,8 @@ class DataFetcher {
         .then((r) => r.json())
     }
 
-    static submitFile(formData){
-        console.log(formData)
-        return fetch(`${API_DOMAIN}/data`, {
+    static submitFile(formData, cardType){
+        return fetch(`${API_DOMAIN}/data?cardType=${cardType}`, {
             method:'POST',
             body:formData
         })
