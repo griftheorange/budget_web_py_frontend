@@ -10,6 +10,10 @@ function LineComp(props) {
                 datasets: props.processedLineData
             }}
             options={{
+                title: {
+                    display:true,
+                    text:'Balances Over Time'
+                },
                 // Fills graph to container size
                 responsive: true,
                 // Stretches graph to container shape

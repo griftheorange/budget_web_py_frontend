@@ -3,18 +3,29 @@ import { connect } from 'react-redux';
 import { Pie } from 'react-chartjs-2'
 
 function PieComp(props) {
-    if(props.data){
-        return (
-            <Pie data={{
-                    datasets: props.data[props.pieType]['data'],
-                    labels: props.data[props.pieType]['labels'],
-                }} options={{
-                    responsive:true,
-                    maintainAspectRatio:false
-                }}/>
-        )
-    } else {
-        return null
+    return (
+        <Pie data={{
+                datasets: props.pieData['data'],
+                labels: props.pieData['labels'],
+            }} options={{
+                title:{
+                    display:true,
+                    text:getTitleText(props)
+                },
+                responsive:true,
+                maintainAspectRatio:false
+        }}/>
+    )
+}
+
+function getTitleText(props){
+    switch(props.pieType){
+        case 'income_pie_data':
+            return "Income vs Spendings"
+        case 'spendings_pie_data':
+            return "Spendings"
+        default:
+            return ""
     }
 }
 

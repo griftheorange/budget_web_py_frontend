@@ -39,7 +39,7 @@ function Main(props) {
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Reset From Backup</Header>
                             <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Select the Backup File to reset the data from</Header.Subheader>
-                            {getResetFromBackupForm(props)}
+                            {genResetFromBackupForm(props)}
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
                  pullRight={false}>
@@ -48,7 +48,7 @@ function Main(props) {
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Export File</Header>
                             <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>File will export as .xlsx, .csv, or .p ('pickle') based on the file tag you input</Header.Subheader>
-                            {getExportExcelForm(props)}
+                            {genExportExcelForm(props)}
                         </div>} 
                  open={props.exportExcelFormOpen} 
                  pullRight={false}>
@@ -57,7 +57,7 @@ function Main(props) {
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Save Changes to Backup</Header>
                             <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Files with the same name will overwrite on backend</Header.Subheader>
-                            {getSaveChangesForm(props)}
+                            {genSaveChangesForm(props)}
                         </div>} 
                  open={props.saveChangesOpen} 
                  pullRight={false}>
@@ -65,7 +65,7 @@ function Main(props) {
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Insert Entry</Header>
-                            {getNewEntryForm(props)}
+                            {genNewEntryForm(props)}
                         </div>} 
                  open={props.newEntryFormOpen} 
                  pullRight={true}>
@@ -77,8 +77,13 @@ function Main(props) {
                         </div>} 
                  open={props.sidebarOpen} 
                  pullRight={true}>
+
             <div className={'window'}>
+
+                {/* Graph Block */}
                 <div className={props.fullscreenGraph ? 'graph-block fullscreen' : 'graph-block'}>
+
+                    {/* Da Graph */}
                     <div className={props.fullscreenGraph ? 'bordered graph fullscreen' : 'bordered graph'} style={{position: 'relative'}}>
                         <div style={{position: 'absolute', top:'1em', right: '1em'}}>
                             <Button size={'mini'} icon={'expand arrows alternate'} onClick={props.toggleFullscreenGraph}></Button>
@@ -92,10 +97,14 @@ function Main(props) {
                         <div style={{position: 'absolute', top:'10em', right: '1em'}}>
                             <Button size={'mini'} icon={'arrow alternate circle down'} onClick={()=>{props.setGraphInView('spendings_pie_graph')}}></Button>
                         </div>
-                        {getGraph(props)}
+                        {genGraph(props)}
                     </div>
+                    {/* End Uh Da Graph */}
+
+                    {/* Buttons Below Da Graph */}
                     <div className={'bordered button-block'}>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}}>New Card</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setSaveChangesOpen(true)}}>Save Changes to Backup</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setExportExcelFormOpen(true)}}>Export File</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setResetFromBackupFormOpen(true)}}>Reset From Backup</Button>
@@ -118,7 +127,12 @@ function Main(props) {
                             </Form>
                         </Container>
                     </div>
+                    {/* Buttons Below Da Graph End Here */}
+
                 </div>
+                {/* End of Graph Block Component */}
+
+                {/* Da Table */}
                 <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
                     <div style={{position: 'absolute', top:'1em', right: '1em'}}>
                         <Button size={'mini'} icon={'refresh'} onClick={() => {loadData(props)}}></Button>
@@ -128,7 +142,10 @@ function Main(props) {
                     </div>
                     <TableComp/>
                 </div>
+                {/* End Uh Da Table */}
+
             </div>
+
         </Sidebar>
         </Sidebar>
         </Sidebar>
@@ -180,6 +197,12 @@ function calcProcessedLineData(props, data){
     props.setProcessedLineData(data)
 }
 
+function formattedCurrentDate(){
+    let date = new Date(Date.now())
+    date = date.getFullYear()+'-'+((date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : (date.getMonth()+1))+'-'+(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())
+    return date
+}
+
 function genIncomeFills(labels){
     let colors = []
     for(let i = 0; i < labels.length; i++){
@@ -200,18 +223,18 @@ function genSpendingsFills(labels){
     return colors
 }
 
-function getGraph(props){
+function genGraph(props){
     switch(props.graphInView){
         case "line_graph":
             return <LineComp/>
         case "income_pie_graph":
-            return <PieComp pieType={'income_pie_data'}/>
+            return <PieComp pieData={props.data ? props.data['income_pie_data'] : null} pieType={'income_pie_data'}/>
         case "spendings_pie_graph":
-            return <PieComp pieType={'spendings_pie_data'}/>
+            return <PieComp pieData={props.data ? props.data['spendings_pie_data'] : null} pieType={'spendings_pie_data'}/>
     }
 }
 
-function getNewEntryForm(props){
+function genNewEntryForm(props){
     let elements = []
     elements.push(
         <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -257,7 +280,7 @@ function getNewEntryForm(props){
     return elements
 }
 
-function getSaveChangesForm(props){
+function genSaveChangesForm(props){
     let elements = []
     elements.push(
         <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -292,7 +315,7 @@ function getSaveChangesForm(props){
     return elements
 }
 
-function getExportExcelForm(props){
+function genExportExcelForm(props){
     let elements = []
     elements.push(
         <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -322,7 +345,7 @@ function getExportExcelForm(props){
     return elements
 }
 
-function getResetFromBackupForm(props){
+function genResetFromBackupForm(props){
     let elements = []
     elements.push(
         <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -344,12 +367,6 @@ function getResetFromBackupForm(props){
         </Container>
     )
     return elements
-}
-
-function formattedCurrentDate(){
-    let date = new Date(Date.now())
-    date = date.getFullYear()+'-'+((date.getMonth()+1) < 10 ? '0'+(date.getMonth()+1) : (date.getMonth()+1))+'-'+(date.getDate() < 10 ? '0'+date.getDate() : date.getDate())
-    return date
 }
 
 function genOptions(cats){
@@ -392,6 +409,9 @@ function genSidebarButtons(props){
     }
     return buttons
 }
+
+//##########################################################################################################
+//Event Handler Funcitons Below
 
 function handleNewEntrySubmit(event, props){
     let th = document.getElementById("Transaction_History_Input")
@@ -510,6 +530,7 @@ function handleExportRequest(props){
     }
 }
 
+// Helper for handleExport Request
 // Uses hidden a tag to properly name URL downloaded blob file
 function saveFile(blob, filename){
     let a = document.createElement('a')
