@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 import { connect } from 'react-redux';
 
-import './../../CSS/TableComp.css'
+import '../../../CSS/TableComp.css'
 
 function TableComp(props) {
     if(props.data){

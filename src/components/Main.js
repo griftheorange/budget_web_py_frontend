@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 
 import Sidebars from './mainBlocks/SideBars/Sidebars.js'
-import TableComp from './supportComponents/TableComp.js'
+import TableComp from './mainBlocks/TableBlock/TableComp.js'
 import LineComp from '../components/graphs/LineComp.js'
 import PieComp from '../components/graphs/PieComp.js'
 
