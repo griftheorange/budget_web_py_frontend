@@ -11,7 +11,7 @@ import SupportFunctions from '../adaptors/supportFuncs.js'
 import Fetcher from '../adaptors/dataFetcher.js'
 import '../CSS/Main.css'
 
-
+ 
 function Main(props) {
     // Loads Data on mount, then never runs
     useEffect(() => {
