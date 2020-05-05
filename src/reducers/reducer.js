@@ -1,15 +1,17 @@
 let initialState = {
     data:null,
     lineDataColumns: "ALL",
-    processedLineData:null,
+
     submittedFile:null,
     selectedCardType: "TD",
+    elementInEdit:null,
+
     sidebarOpen: false,
     newEntryFormOpen: false,
     saveChangesOpen: false,
     exportExcelFormOpen: false,
     resetFromBackupFormOpen: false,
-    elementInEdit:null,
+    
     fullscreenGraph:false,
     graphInView: "line_graph"
 }

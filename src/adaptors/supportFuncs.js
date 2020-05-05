@@ -26,7 +26,6 @@ export default class SupportFunctions{
 
     static  genOptions(cats){
         let options = []
-        console.log(cats)
         options.push(<option value=""></option>)
         for(let i = 0; i < cats.length; i++){
             options.push(<option value={cats[i]}>{cats[i]}</option>)

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Header, Divider, List, Button, Container, Form } from 'semantic-ui-react'
 
-import Fetcher from '../../adaptors/dataFetcher.js'
+import Fetcher from '../../../adaptors/dataFetcher.js'
 
 function DirectoryList(props) {
 

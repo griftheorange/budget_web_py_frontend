@@ -7,7 +7,7 @@ function LineComp(props) {
         <Line 
             // Line Data pulled from processed data state
             data={{
-                datasets: props.processedLineData
+                datasets: props.data['line_data']
             }}
             options={{
                 title: {
@@ -77,7 +77,7 @@ function formatNumber(num) {
 // Redux Functions Below
 function mapStateToProps(state){
     return {
-        processedLineData: state.processedLineData
+        data: state.data
     }
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Divider, Form, Button } from 'semantic-ui-react'
 
-import DirectoryList from '../../supportComponents/DirectoryList.js'
+import DirectoryList from '../supportComponents/DirectoryList.js'
 
 import SupportFunctions from '../../../adaptors/supportFuncs.js'
 import Handlers from './Handlers.js'
