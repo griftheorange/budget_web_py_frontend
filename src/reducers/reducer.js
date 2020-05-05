@@ -8,7 +8,7 @@ let initialState = {
     newEntryFormOpen: false,
     saveChangesOpen: false,
     exportExcelFormOpen: false,
-    resetFromBackupFormOpen: true,
+    resetFromBackupFormOpen: false,
     elementInEdit:null,
     fullscreenGraph:false,
     graphInView: "line_graph"
