@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'
 import { Pie } from 'react-chartjs-2'
+import React from 'react'
 
 function PieComp(props) {
     return (

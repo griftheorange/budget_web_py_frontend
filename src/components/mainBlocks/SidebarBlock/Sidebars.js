@@ -1,7 +1,7 @@
-import React from 'react';
+import { Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import Sidebar from 'react-sidebar'
-import { Header } from 'semantic-ui-react'
+import React from 'react';
 
 //Support Files
 import Generators from './Generators.js'

@@ -1,4 +1,3 @@
-import { Button } from 'semantic-ui-react'
 import React, { useEffect } from 'react';
 import {connect} from 'react-redux'
 
@@ -15,18 +14,18 @@ import '../CSS/Main.css'
 function Main(props) {
     // Loads Data on mount, then never runs
     useEffect(() => {
-        loadData(props)
+        loadData(props.setData)
     }, [])
 
     return (
-        <Sidebars loadData={() => {loadData(props)}}>
+        <Sidebars loadData={() => {loadData(props.setData)}}>
             <div className={'window'}>
                 <div className={props.fullscreenGraph ? 'graph-block fullscreen' : 'graph-block'}>
                     <Graph/>
-                    <Interface loadData={() => {loadData(props)}}/>
+                    <Interface loadData={() => {loadData(props.setData)}}/>
                 </div>
                 <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
-                    <TableComp loadData={() => {loadData(props)}}/>
+                    <TableComp loadData={() => {loadData(props.setData)}}/>
                 </div>
             </div>
         </Sidebars>
@@ -37,8 +36,8 @@ function Main(props) {
 // 'data' key holds full table data for rendering in table-block
 // 'line_data' key holds formatted line graph data from backend
 // 'line_data' is mapped on front-end for compatability with Chart.js library, then saved to state
-function loadData(props){
-    let data = Fetcher.getData(props.lineDataColumns)
+function loadData(setData){
+    let data = Fetcher.getData()
     data.then((json) => {
         json['line_data'] = json['line_data'].map((dataArr, index) => {
             return {
@@ -63,7 +62,7 @@ function loadData(props){
             backgroundColor: genSpendingsFills(json['spendings_pie_data']['labels']),
             borderWidth: new Array(json['income_pie_data']['labels'].length).fill(0.2)
         }]
-        props.setData(json)
+        setData(json)
     })
 }
 
@@ -93,8 +92,6 @@ function genSpendingsFills(labels){
 // Redux Functions Below
 function mapStateToProps(state){
     return {
-        submittedFile: state.submittedFile,
-        selectedCardType: state.selectedCardType,
         fullscreenGraph: state.fullscreenGraph
     }
 }

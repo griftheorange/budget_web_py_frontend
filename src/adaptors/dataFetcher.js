@@ -3,7 +3,7 @@ const DATA_FILENAME = "data"
 
 class DataFetcher {
 
-    static getData(selection){
+    static getData(){
         return fetch(`${API_DOMAIN}/data/${DATA_FILENAME}`)
         .then((r) => r.json())
     }

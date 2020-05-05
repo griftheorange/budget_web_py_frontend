@@ -1,6 +1,6 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { Line } from 'react-chartjs-2'
+import { connect } from 'react-redux'
+import React from 'react'
 
 function LineComp(props) {
     return (

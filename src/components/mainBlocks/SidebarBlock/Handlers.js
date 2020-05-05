@@ -1,5 +1,5 @@
-import Fetcher from '../../../adaptors/dataFetcher.js'
 import SupportFunctions from  '../../../adaptors/supportFuncs.js'
+import Fetcher from '../../../adaptors/dataFetcher.js'
 
 export default class Handlers{
     static handleExportRequest(props){

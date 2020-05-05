@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
 import { Header, Divider, List, Button, Container, Form } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { connect } from 'react-redux'
 
 import Fetcher from '../../../adaptors/dataFetcher.js'
 
