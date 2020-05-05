@@ -34,7 +34,7 @@ function Main(props) {
     }, [])
 
     return (
-        // Reset from Backup File Prompt
+        // Reset from Backup File Prompt IN PROGRESS
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Reset From Backup</Header>
@@ -42,7 +42,7 @@ function Main(props) {
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
                  pullRight={false}>
-        {/* Export Excel File Prompt IN PROGRESS*/}
+        {/* Export Excel File Prompt DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Export File</Header>
@@ -97,7 +97,7 @@ function Main(props) {
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setSaveChangesOpen(true)}}>Save Changes to Backup</Button>
                             <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setExportExcelFormOpen(true)}}>Export File</Button>
-                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={(e) => {handlePickleReset(e, props)}}>Reset From Backup</Button>
+                            <Button style={{width: '80%',margin:'auto',marginLeft:'10%',marginRight:'10%'}} onClick={() => {props.setResetFromBackupFormOpen(true)}}>Reset From Backup</Button>
                         </Container>
                         <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
                             <Form style={{margin: '1em'}}encType='multipart/form-data' onSubmit={(e)=>{handleSendBackFile(e, props)}}>
@@ -594,23 +594,6 @@ function mapDispatchToProps(dispatch){
             })
         }
     }
-}
-
-//##############################################################
-// Testing functions below
-
-// Sends request to re-load data from backup for testing
-function handlePickleReset(e, props){
-    Fetcher.resetPickle()
-    .then((r) => {
-        loadData(props)
-    })
-}
-
-// Prints CSV on backend for testing
-function handleCSVPrint(event){
-    Fetcher.printCSV()
-    .then(console.log)
 }
 
 

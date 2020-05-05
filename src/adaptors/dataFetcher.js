@@ -15,14 +15,6 @@ class DataFetcher {
         })
     }
 
-    static printCSV(){
-        return fetch(`${API_DOMAIN}/print_csv`)
-    }
-
-    static resetPickle(){
-        return fetch(`${API_DOMAIN}/reset`)
-    }
-
     static updateCell(category, loc){
         let locArr = loc.split(',')
         return fetch(`${API_DOMAIN}/update_cell`, {
