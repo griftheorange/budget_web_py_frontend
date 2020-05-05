@@ -96,7 +96,7 @@ export default class Generators{
                     <Divider/>
                 </Container>
                 <Container>
-                    <Form onSubmit={(e)=>{Handlers.handleNewEntrySubmit(e, props)}}>
+                    <Form onSubmit={(e)=>{Handlers.handleNewEntrySubmit(props)}}>
                         <Form.Field style={{margin: 0, padding: '0.5em'}}>
                             <label>Transaction History</label>
                             <input id={'Transaction_History_Input'} placeholder='Name of Entry'/>

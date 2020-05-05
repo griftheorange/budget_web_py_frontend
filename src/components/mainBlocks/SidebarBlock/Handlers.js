@@ -48,7 +48,7 @@ export default class Handlers{
         }
     }
 
-    static handleNewEntrySubmit(event, props){
+    static handleNewEntrySubmit(props){
         let th = document.getElementById("Transaction_History_Input")
         let date = document.getElementById("Date_Input")
         let type = document.getElementById("Type_Input")
