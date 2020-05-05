@@ -479,16 +479,26 @@ function handleExportRequest(props){
     let fileTag = filenameArr[filenameArr.length-1]
     if(['p', 'csv', 'xlsx'].includes(fileTag)){
         Fetcher.requestExportFile(fileTag, filenameInput.value)
-        .then(r => r.json())
-        .then((response) => {
-            if(response['status'] === 'Success'){
-                //Recieve File TODO
-                filenameInput.value = 'budget_'+formattedCurrentDate()+'.xlsx'
-                props.setExportExcelFormOpen(false)
-                loadData(props)
-            }
+        .then(r => r.blob())
+        .then((blob) => {
+            saveFile(blob, filenameInput.value)
+            filenameInput.value = 'budget_'+formattedCurrentDate()+'.xlsx'
+            props.setExportExcelFormOpen(false)
+            loadData(props)
         })
     }
+}
+
+// Uses hidden a tag to properly name URL downloaded blob file
+function saveFile(blob, filename){
+    let a = document.createElement('a')
+    document.body.appendChild(a)
+    a.style = "display: none"
+    let url = window.URL.createObjectURL(blob)
+    a.href = url
+    a.download = filename
+    a.click()
+    window.URL.revokeObjectURL(url)
 }
 
 //################################################################
