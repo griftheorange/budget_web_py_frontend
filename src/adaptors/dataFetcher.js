@@ -68,6 +68,19 @@ class DataFetcher {
             })
         })
     }
+
+    static resetFromFile(fileTag, filename){
+        return fetch(`${API_DOMAIN}/reset`, {
+            method:'PATCH',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify({
+                filetag:fileTag,
+                filename:filename
+            })
+        })
+    }
 }
 
 export default DataFetcher

@@ -38,6 +38,7 @@ function Main(props) {
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
                             <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Reset From Backup</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Select the Backup File to reset the data from</Header.Subheader>
                             {getResetFromBackupForm(props)}
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
@@ -283,7 +284,7 @@ function getSaveChangesForm(props){
             </Form>
             <Divider/>
             <Container style={{border: '1px solid black', height: '32em', paddingLeft: '0.5em', paddingRight: '0.5em', overflowY: 'scroll'}}>
-                <DirectoryList/>
+                <DirectoryList loadData={()=>{loadData(props)}}activeListeners={false}/>
             </Container>
         </Container>
     )
@@ -321,8 +322,28 @@ function getExportExcelForm(props){
     return elements
 }
 
-function getResetFromBackupForm(){
-    return null
+function getResetFromBackupForm(props){
+    let elements = []
+    elements.push(
+        <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+            <Button size={'mini'} 
+                    inverted={true} 
+                    color={'red'}
+                    style={{marginLeft: '13em'}}
+                    onClick={() => {props.setResetFromBackupFormOpen(false)}}>X</Button>
+        </Container>
+    )
+    elements.push(
+        <Container>
+            <Divider/>
+        </Container>
+    )
+    elements.push(
+        <Container style={{border: '1px solid black', height: '45em', paddingLeft: '0.5em', paddingRight: '0.5em', overflowY: 'scroll'}}>
+            <DirectoryList loadData={()=>{loadData(props)}} activeListeners={true}/>
+        </Container>
+    )
+    return elements
 }
 
 function formattedCurrentDate(){
@@ -348,7 +369,7 @@ function genSidebarButtons(props){
                     inverted={true} 
                     color={'red'}
                     style={{marginLeft: '0.5em'}}
-                    onClick={() => {handleSidebarClose('CLOSE', props)}}>X</Button>
+                    onClick={() => {handleTypeSelection('CLOSE', props)}}>X</Button>
         </Container>
     )
     buttons.push(
@@ -361,7 +382,7 @@ function genSidebarButtons(props){
             let catString = props.data['categories'][category]
             buttons.push(
                 <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
-                    <Button onClick={() => {handleSidebarClose(catString, props)}}
+                    <Button onClick={() => {handleTypeSelection(catString, props)}}
                             inverted={true}
                             color={'green'}
                             style={{margin: 'auto', width: '90%'}}>{catString}</Button>
@@ -399,7 +420,7 @@ function handleNewEntrySubmit(event, props){
     }
 }
 
-function handleSidebarClose(category, props){
+function handleTypeSelection(category, props){
     if(category === 'CLOSE'){
         props.setElementInEdit(null)
         props.setSidebarOpen(false)
