@@ -18,14 +18,14 @@ function Main(props) {
     }, [])
 
     return (
-        <Sidebars loadData={() => {loadData(props.setData)}}>
+        <Sidebars loadData={() => {loadData(props.setData, props.setSelectedCardType)}}>
             <div className={'window'}>
                 <div className={props.fullscreenGraph ? 'graph-block fullscreen' : 'graph-block'}>
                     <Graph/>
-                    <Interface loadData={() => {loadData(props.setData)}}/>
+                    <Interface loadData={() => {loadData(props.setData, props.setSelectedCardType)}}/>
                 </div>
                 <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
-                    <TableComp loadData={() => {loadData(props.setData)}}/>
+                    <TableComp loadData={() => {loadData(props.setData, props.setSelectedCardType)}}/>
                 </div>
             </div>
         </Sidebars>
@@ -63,6 +63,9 @@ function loadData(setData){
             borderWidth: new Array(json['income_pie_data']['labels'].length).fill(0.2)
         }]
         setData(json)
+        if(json['cards'][0]){
+            document.getElementById('Card_Type_Select').value = json['cards'][0]
+        }
     })
 }
 
@@ -92,7 +95,8 @@ function genSpendingsFills(labels){
 // Redux Functions Below
 function mapStateToProps(state){
     return {
-        fullscreenGraph: state.fullscreenGraph
+        fullscreenGraph: state.fullscreenGraph,
+        selectedCardType: state.selectedCardType
     }
 }
 function mapDispatchToProps(dispatch){
@@ -101,6 +105,12 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_DATA",
                 value: data
+            })
+        },
+        setSelectedCardType: (type) => {
+            dispatch({
+                type: 'SET_SELECTED_CARD_TYPE',
+                value: type
             })
         }
     }

@@ -51,6 +51,17 @@ class DataFetcher {
         })
     }
 
+    static patchNewCardType(json){
+        return fetch(`${API_DOMAIN}/new_card`, {
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify(json)
+        })
+    }
+
     static deleteEntryAtIndex(index){
         return fetch(`${API_DOMAIN}/delete_entry`, {
             method:'DELETE',

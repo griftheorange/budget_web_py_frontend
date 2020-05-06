@@ -27,6 +27,43 @@ export default class Generators{
             </>
         )
     }
+    static genNewCardForm(props){
+        return (
+            <>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button size={'mini'} 
+                            inverted={true} 
+                            color={'red'}
+                            style={{marginLeft: '13em'}}
+                            onClick={() => {props.setNewCardFormOpen(false)}}>X</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Form onSubmit={() => {Handlers.handleNewCardSubmit(props)}} style={{paddingLeft: '0.5em', paddingRight: '0.5em'}}>
+                        <Form.Field>
+                            <label>Card Name</label>
+                            <input id={'Card_Name_Input'} placeholder='Card Name'/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Transaction History:</label>
+                            <input id={'TH_Source_Input'} placeholder='Card Name'/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Date</label>
+                            <input id={'Date_Source_Input'} placeholder='Card Name'/>
+                        </Form.Field>
+                        <Form.Field>
+                            <label>Cost</label>
+                            <input id={'Cost_Source_Input'} placeholder='Card Name'/>
+                        </Form.Field>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                </Container> 
+            </>
+        )
+    }
     static genExportForm(props){
         return (
             <>

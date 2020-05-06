@@ -4,6 +4,7 @@ import React from 'react';
 import Generators from './Generators.js'
 
 function Interface(props) {
+
     return (
         <div className={'bordered button-block'}>
             {Generators.genButtonBlock(props)}
@@ -15,7 +16,7 @@ function Interface(props) {
 function mapStateToProps(state){
     return ({
         submittedFile: state.submittedFile,
-        selectedCardType: state.selectedCardType
+        data: state.data
     })
 }
 
@@ -43,12 +44,6 @@ function mapDispatchToProps(dispatch){
             dispatch({
                 type: "SET_RESET_FROM_BACKUP_FORM_OPEN",
                 value: open
-            })
-        },
-        setSelectedCardType: (type) => {
-            dispatch({
-                type: "SET_SELECTED_CARD_TYPE",
-                value: type
             })
         },
         setInitializeFormOpen: (open) => {

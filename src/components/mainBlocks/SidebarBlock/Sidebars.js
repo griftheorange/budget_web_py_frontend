@@ -17,6 +17,14 @@ function Sidebars(props) {
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
                  pullRight={false}>
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Add Card To List</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Fill in the Card Name, and the Corresponding Columns for the datafiles you download from your card Provider</Header.Subheader>
+                            {Generators.genNewCardForm(props)}
+                        </div>} 
+                 open={props.newCardFormOpen} 
+                 pullRight={false}></Sidebar>
         {/* Export File Prompt DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
@@ -94,6 +102,7 @@ function mapStateToProps(state){
         exportExcelFormOpen: state.exportExcelFormOpen,
         initializeFormOpen: state.initializeFormOpen,
         resetFromBackupFormOpen: state.resetFromBackupFormOpen,
+        newCardFormOpen: state.newCardFormOpen,
         elementInEdit: state.elementInEdit
     })
 } 
@@ -138,6 +147,12 @@ function mapDispatchToProps(dispatch){
         setInitializeFormOpen: (open) => {
             dispatch({
                 type: "SET_INITIALIZE_FORM_OPEN",
+                value: open
+            })
+        },
+        setNewCardFormOpen: (open) => {
+            dispatch({
+                type: "SET_NEW_CARD_FORM_OPEN",
                 value: open
             })
         },

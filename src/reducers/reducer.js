@@ -3,7 +3,6 @@ let initialState = {
     lineDataColumns: "ALL",
 
     submittedFile:null,
-    selectedCardType: "TD",
     elementInEdit:null,
 
     sidebarOpen: false,
@@ -12,6 +11,7 @@ let initialState = {
     saveChangesOpen: false,
     exportExcelFormOpen: false,
     resetFromBackupFormOpen: false,
+    newCardFormOpen: false,
     initializeFormOpen: false,
     
     fullscreenGraph:false,
@@ -26,8 +26,6 @@ export default function(state=initialState, action){
             return {...state, submittedFile:action.value}
         case "SET_PROCESSED_LINE_DATA":
             return {...state, processedLineData:action.value}
-        case "SET_SELECTED_CARD_TYPE":
-            return {...state, selectedCardType:action.value}
         case "SET_SIDEBAR_OPEN":
             return {...state, sidebarOpen:action.value}
         case "SET_NEW_ENTRY_FORM_OPEN":
@@ -42,6 +40,8 @@ export default function(state=initialState, action){
             return {...state, resetFromBackupFormOpen:action.value}
         case "SET_INITIALIZE_FORM_OPEN":
             return {...state, initializeFormOpen:action.value}
+        case "SET_NEW_CARD_FORM_OPEN":
+            return {...state, newCardFormOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":

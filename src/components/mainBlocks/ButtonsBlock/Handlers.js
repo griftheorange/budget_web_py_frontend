@@ -1,9 +1,6 @@
 import Fetcher from '../../../adaptors/dataFetcher.js'
 
 export default class Handlers{
-    static handleSelectChange(event, props){
-        props.setSelectedCardType(event.target.value)
-    }
     
     // File input is a controlled form, but might not need to be,
     // since sending data to back end doesn't pull from state due to,
@@ -22,7 +19,9 @@ export default class Handlers{
             data.append('file', e.target.querySelector("input").files[0])
             data.append('filename', e.target.querySelector("input").files[0].name)
             
-            Fetcher.submitFile(data, props.selectedCardType)
+            console.log(e.target.querySelector('select').value)
+
+            Fetcher.submitFile(data, e.target.querySelector('select').value)
             .then(r => {props.loadData()})
         }
     }

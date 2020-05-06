@@ -31,6 +31,33 @@ export default class Handlers{
         }
     }
 
+    static handleNewCardSubmit(props){
+        let card_name = document.getElementById('Card_Name_Input')
+        let th = document.getElementById('TH_Source_Input')
+        let date = document.getElementById('Date_Source_Input')
+        let cost = document.getElementById('Cost_Source_Input')
+        if(card_name.value && th.value && date.value && cost.value){
+            let json = {
+                card_name:card_name.value,
+                th:th.value,
+                date:date.value,
+                cost:cost.value
+            }
+            Fetcher.patchNewCardType(json)
+            .then(r => r.json())
+            .then((response) => {
+                if(response['status'] == 'Success'){
+                    card_name.value = null
+                    th.value = null
+                    date.value = null
+                    cost.value = null
+                    props.setNewCardFormOpen(false)
+                    props.loadData()
+                }
+            })
+        }
+    }
+
     static handleBackupSubmit(props){
         let filenameInput = document.getElementById('Backup_Filename_Input')
         let filenameArr = filenameInput.value.split('.')
