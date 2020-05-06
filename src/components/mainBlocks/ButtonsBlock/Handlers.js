@@ -17,7 +17,6 @@ export default class Handlers{
     // Needed to be formatted this way for compatibility with flask
     // On return of file sendback, re-loads data for graph and table with updated data
     static handleSendBackFile(e, props){
-        e.preventDefault()
         if(props.submittedFile){
             let data = new FormData()
             data.append('file', e.target.querySelector("input").files[0])

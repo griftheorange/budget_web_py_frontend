@@ -17,7 +17,7 @@ export default class Generators{
     
     static genCardFileForm(props){
         return (
-            <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column'}}>
+            <Container style={{border: '1px solid black', width:'50%', display:'flex', flexDirection:'column', position: 'relative'}}>
                 <Form style={{margin: '1em'}}encType='multipart/form-data' onSubmit={(e)=>{Handlers.handleSendBackFile(e, props)}}>
                     <Form.Field>
                     <select value={props.selectedCardType} onChange={(e) => {Handlers.handleSelectChange(e, props)}}>
@@ -33,6 +33,7 @@ export default class Generators{
                     </Form.Field>
                     <Button type="submit">Send Back File</Button>
                 </Form>
+                <Button onClick={() => {props.setInitializeFormOpen(true)}} style={{position: 'absolute', right: '1em', bottom: '0.5em'}}>Initialize Graph</Button>
             </Container>
         )
     }

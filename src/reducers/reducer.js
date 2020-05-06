@@ -8,9 +8,11 @@ let initialState = {
 
     sidebarOpen: false,
     newEntryFormOpen: false,
+    deleteEntryFormOpen: false,
     saveChangesOpen: false,
     exportExcelFormOpen: false,
     resetFromBackupFormOpen: false,
+    initializeFormOpen: false,
     
     fullscreenGraph:false,
     graphInView: "line_graph"
@@ -30,12 +32,16 @@ export default function(state=initialState, action){
             return {...state, sidebarOpen:action.value}
         case "SET_NEW_ENTRY_FORM_OPEN":
             return {...state, newEntryFormOpen:action.value}
+        case "SET_DELETE_ENTRY_FORM_OPEN":
+            return {...state, deleteEntryFormOpen:action.value}
         case "SET_SAVE_CHANGES_OPEN":
             return {...state, saveChangesOpen:action.value}
         case "SET_EXPORT_EXCEL_FORM_OPEN":
             return {...state, exportExcelFormOpen:action.value}
         case "SET_RESET_FROM_BACKUP_FORM_OPEN":
             return {...state, resetFromBackupFormOpen:action.value}
+        case "SET_INITIALIZE_FORM_OPEN":
+            return {...state, initializeFormOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":

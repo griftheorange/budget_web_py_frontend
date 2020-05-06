@@ -1,8 +1,9 @@
 import { Button } from 'semantic-ui-react'
 import React from 'react';
 
+import SpendingsPieComp from './Graphs/SpendingsPieComp.js'
+import IncomePieComp from './Graphs/IncomePieComp.js'
 import LineComp from './Graphs/LineComp.js'
-import PieComp from './Graphs/PieComp.js'
 
 export default class Generators{    
     static genButtons(props){
@@ -24,15 +25,17 @@ export default class Generators{
         )
     }
     
+    // Note IncomePieComp and SpendingsPieComp were made separate components
+    // because Chart.js doesn't play nice otherwise
     static genGraph(props){
         if(props.data){
             switch(props.graphInView){
                 case "line_graph":
                     return <LineComp/>
                 case "income_pie_graph":
-                    return <PieComp pieType={'income_pie_data'}/>
+                    return <IncomePieComp pieType={'income_pie_data'}/>
                 case "spendings_pie_graph":
-                    return <PieComp pieType={'spendings_pie_data'}/>
+                    return <SpendingsPieComp pieType={'spendings_pie_data'}/>
             }
         }
     }

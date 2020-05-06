@@ -14,7 +14,8 @@ function TableComp(props) {
 
 function mapStateToProps(state){
     return ({
-        data: state.data
+        data: state.data,
+        fullscreenGraph: state.fullscreenGraph
     })
 }
 
@@ -23,6 +24,12 @@ function mapDispatchToProps(dispatch){
         setNewEntryFormOpen: (open) => {
             dispatch({
                 type: "SET_NEW_ENTRY_FORM_OPEN",
+                value: open
+            })
+        },
+        setDeleteEntryFormOpen: (open) => {
+            dispatch({
+                type: "SET_DELETE_ENTRY_FORM_OPEN",
                 value: open
             })
         },

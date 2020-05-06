@@ -5,8 +5,8 @@ import React from 'react'
 function PieComp(props) {
     return (
         <Pie data={{
-                datasets: props.data[props.pieType]['data'],
-                labels: props.data[props.pieType]['labels'],
+                datasets: props.data['income_pie_data']['data'],
+                labels: props.data['income_pie_data']['labels'],
             }} options={{
                 title:{
                     display:true,

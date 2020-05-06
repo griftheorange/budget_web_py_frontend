@@ -14,11 +14,14 @@ export default class Generators{
     static genButtons(props){
         return (
             <>
-                <div style={{position: 'absolute', top:'1em', right: '1em'}}>
+                <div style={{display: props.fullscreenGraph ? 'none' : 'block',position: 'fixed', top:'1em', right: '1.5em'}}>
                     <Button size={'mini'} icon={'refresh'} onClick={props.loadData}></Button>
                 </div>
-                <div style={{position: 'absolute', top:'4em', right: '1em'}}>
+                <div style={{display: props.fullscreenGraph ? 'none' : 'block',position: 'fixed', top:'4em', right: '1.5em'}}>
                     <Button size={'mini'} icon={'plus'} onClick={() => {props.setNewEntryFormOpen(true)}}></Button>
+                </div>
+                <div style={{display: props.fullscreenGraph ? 'none' : 'block',position: 'fixed', top:'7em', right: '1.5em'}}>
+                    <Button size={'mini'} icon={'trash alternate'} onClick={() => {props.setDeleteEntryFormOpen(true)}}></Button>
                 </div>
             </>
         )

@@ -35,6 +35,15 @@ function Sidebars(props) {
                         </div>} 
                  open={props.saveChangesOpen} 
                  pullRight={false}>
+        {/* Initialize Table From */}
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Upload File</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Uploaded File will overwrite all current data. Make sure you save if you have stuff you want to keep</Header.Subheader>
+                            {Generators.genInitializeForm(props)}
+                        </div>} 
+                 open={props.initializeFormOpen} 
+                 pullRight={false}>
         {/* New Table Entry Sidebar DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
@@ -42,6 +51,15 @@ function Sidebars(props) {
                             {Generators.genNewEntryForm(props)}
                         </div>} 
                  open={props.newEntryFormOpen} 
+                 pullRight={true}>
+        {/* Delete Table Entry Sidebar */}
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Delete Entry</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Type the index of the row you wish to delete, entries can always be re-input, but please be careful.</Header.Subheader>
+                            {Generators.genDeleteEntryForm(props)}
+                        </div>} 
+                 open={props.deleteEntryFormOpen} 
                  pullRight={true}>
         {/* Update Cell in Type Column Sidebar DONE*/}
         <Sidebar sidebar={
@@ -59,6 +77,8 @@ function Sidebars(props) {
         </Sidebar>
         </Sidebar>
         </Sidebar>
+        </Sidebar>
+        </Sidebar>
         
     );
 }
@@ -69,8 +89,10 @@ function mapStateToProps(state){
         data: state.data,
         sidebarOpen: state.sidebarOpen,
         newEntryFormOpen: state.newEntryFormOpen,
+        deleteEntryFormOpen: state.deleteEntryFormOpen,
         saveChangesOpen: state.saveChangesOpen,
         exportExcelFormOpen: state.exportExcelFormOpen,
+        initializeFormOpen: state.initializeFormOpen,
         resetFromBackupFormOpen: state.resetFromBackupFormOpen,
         elementInEdit: state.elementInEdit
     })
@@ -104,6 +126,18 @@ function mapDispatchToProps(dispatch){
         setNewEntryFormOpen: (open) => {
             dispatch({
                 type: "SET_NEW_ENTRY_FORM_OPEN",
+                value: open
+            })
+        },
+        setDeleteEntryFormOpen: (open) => {
+            dispatch({
+                type: "SET_DELETE_ENTRY_FORM_OPEN",
+                value: open
+            })
+        },
+        setInitializeFormOpen: (open) => {
+            dispatch({
+                type: "SET_INITIALIZE_FORM_OPEN",
                 value: open
             })
         },

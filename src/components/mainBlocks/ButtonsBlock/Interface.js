@@ -50,6 +50,12 @@ function mapDispatchToProps(dispatch){
                 type: "SET_SELECTED_CARD_TYPE",
                 value: type
             })
+        },
+        setInitializeFormOpen: (open) => {
+            dispatch({
+                type: "SET_INITIALIZE_FORM_OPEN",
+                value: open
+            })
         }
     })
 }

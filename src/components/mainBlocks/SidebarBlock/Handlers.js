@@ -75,6 +75,39 @@ export default class Handlers{
         }
     }
 
+    static handleDeleteEntrySubmit(props){
+        let indexInput = document.getElementById('Delete_Index_Input')
+        if(indexInput.value){
+            Fetcher.deleteEntryAtIndex(indexInput.value)
+            .then(r => r.json())
+            .then((response) => {
+                if(response.status === 'Success'){
+                    indexInput.value = null
+                    props.setDeleteEntryFormOpen(false)
+                    props.loadData()
+                }
+            })
+        }
+    }
+
+    static handleInitFileSubmit(props){
+        let fileInput = document.getElementById('Init_File_Input')
+
+        let data = new FormData()
+        data.append('file', fileInput.files[0])
+        data.append('filename', fileInput.files[0].name)
+            
+        Fetcher.initializeTable(data)
+        .then(r => r.json())
+        .then((response) => {
+            if(response['status'] === 'Success'){
+                props.setInitializeFormOpen(false)
+                fileInput.value=null
+                props.loadData()
+            }
+        })
+     }
+
     static handleTypeSelection(category, props){
         if(category === 'CLOSE'){
             props.setElementInEdit(null)

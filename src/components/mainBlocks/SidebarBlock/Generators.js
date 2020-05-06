@@ -122,6 +122,34 @@ export default class Generators{
             </>
         )
     }
+
+    static genDeleteEntryForm(props){
+        return (
+            <>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button size={'mini'} 
+                            inverted={true} 
+                            color={'red'}
+                            style={{marginLeft: '0.5em'}}
+                            onClick={() => {props.setDeleteEntryFormOpen(false)}}>X</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Form onSubmit={(e)=>{Handlers.handleDeleteEntrySubmit(props)}}>
+                        <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                            <label>Index To Delete</label>
+                            <input type='number' id={'Delete_Index_Input'} placeholder='Index'/>
+                        </Form.Field>
+                        <Divider/>
+                        <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>
+                    </Form>
+                </Container>
+            </>
+        )
+    }
+
     static genCategorySelectionForm(props){
         let buttons = []
         buttons.push(
@@ -152,5 +180,32 @@ export default class Generators{
             }
         }
         return buttons
+    }
+
+    static genInitializeForm(props){
+        return (
+            <>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button size={'mini'} 
+                            inverted={true} 
+                            color={'red'}
+                            style={{marginLeft: '0.5em'}}
+                            onClick={() => {props.setInitializeFormOpen(false)}}>X</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Form onSubmit={(e)=>{Handlers.handleInitFileSubmit(props)}}>
+                        <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                            <label>Seed File</label>
+                            <input type='file' accept="xlsx csv p" id={'Init_File_Input'} placeholder='Init File'/>
+                        </Form.Field>
+                        <Divider/>
+                        <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>
+                    </Form>
+                </Container>
+            </>
+        )
     }
 }

@@ -15,6 +15,16 @@ class DataFetcher {
         })
     }
 
+    static initializeTable(formData){
+        return fetch(`${API_DOMAIN}/initialize_table`, {
+            method:'POST',
+            headers: {
+                'Accept':'application/json'
+            },
+            body:formData
+        })
+    }
+
     static updateCell(category, loc){
         let locArr = loc.split(',')
         return fetch(`${API_DOMAIN}/update_cell`, {
@@ -39,6 +49,19 @@ class DataFetcher {
                 'Accept':'application/json'
             },
             body: JSON.stringify(json)
+        })
+    }
+
+    static deleteEntryAtIndex(index){
+        return fetch(`${API_DOMAIN}/delete_entry`, {
+            method:'DELETE',
+            headers:{
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify({
+                index:index
+            })
         })
     }
 
