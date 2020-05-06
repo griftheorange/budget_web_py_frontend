@@ -189,7 +189,7 @@ export default class Generators{
                     <Button size={'mini'} 
                             inverted={true} 
                             color={'red'}
-                            style={{marginLeft: '0.5em'}}
+                            style={{marginLeft: '13em'}}
                             onClick={() => {props.setInitializeFormOpen(false)}}>X</Button>
                 </Container>
                 <Container>
@@ -199,7 +199,7 @@ export default class Generators{
                     <Form onSubmit={(e)=>{Handlers.handleInitFileSubmit(props)}}>
                         <Form.Field style={{margin: 0, padding: '0.5em'}}>
                             <label>Seed File</label>
-                            <input type='file' accept="xlsx csv p" id={'Init_File_Input'} placeholder='Init File'/>
+                            <input type='file' accept=".xlsx,.csv,.p" id={'Init_File_Input'} placeholder='Init File'/>
                         </Form.Field>
                         <Divider/>
                         <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>

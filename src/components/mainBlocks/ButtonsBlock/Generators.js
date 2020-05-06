@@ -28,7 +28,7 @@ export default class Generators{
                     <Form.Field>
                     <input type="file" 
                         value={props.submittedFile ? props.submittedFile : ""} 
-                        accept=".xls,.xlsx,.csv" 
+                        accept=".xlsx,.csv,.p" 
                         onChange={(e) => {Handlers.handleFileSubmit(e, props)}}/>
                     </Form.Field>
                     <Button type="submit">Send Back File</Button>
