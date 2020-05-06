@@ -31,7 +31,7 @@ export default class Generators{
         if(props.data){
             return (
                 <TableContainer component={Paper}>
-                    <Table size="small" aria-label="simple table">
+                    <Table size="small" aria-label="sticky table">
                         <TableHead>
                             <TableRow>
                                 {Generators.genHeaders(props.data['columns'])}
@@ -67,7 +67,7 @@ export default class Generators{
             // For each row, map through headers returning a TableCell Component
             // appropriate for that column
             rows.push(
-                <TableRow key={i}>
+                <TableRow key={i} style={{position: 'relative'}}>
                     {props.data['columns'].map((header, index) => {
                         switch(header){
                             case "Transaction History":

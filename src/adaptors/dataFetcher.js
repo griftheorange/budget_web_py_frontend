@@ -1,10 +1,9 @@
 const API_DOMAIN = "http://localhost:5000/"
-const DATA_FILENAME = "data"
 
 class DataFetcher {
 
     static getData(){
-        return fetch(`${API_DOMAIN}/data/${DATA_FILENAME}`)
+        return fetch(`${API_DOMAIN}/data`)
         .then((r) => r.json())
     }
 
