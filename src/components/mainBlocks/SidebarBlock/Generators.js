@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Divider, Form, Button } from 'semantic-ui-react'
+import { Container, Divider, Form, Button, Checkbox } from 'semantic-ui-react'
 
 import DirectoryList from './DirectoryList.js'
 
@@ -27,7 +27,7 @@ export default class Generators{
             </>
         )
     }
-    
+
     static genNewCardForm(props){
         return (
             <>
@@ -275,6 +275,56 @@ export default class Generators{
                         <Divider/>
                         <Button style={{width: '90%', margin: '5%'}} type='submit'>Submit</Button>
                     </Form>
+                </Container>
+            </>
+        )
+    }
+
+    static genEditCategoriesForm(props, localLabels, localLabelSetters){
+        function genCategoryForms(){
+            if(props.data){
+                let forms = []
+                for (let index in localLabels['categories']){
+                    let category = localLabels['categories'][index]
+                    let form_id = `${category}_Form_Div`
+                    forms.push(
+                        <Container id={form_id} style={{border: '1px solid black'}}>
+                            <Form>
+                                <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                                    <label>{category}</label>
+                                    <Checkbox onChange={(e) =>  {Handlers.handleLabelsChange(e, localLabelSetters.spending, localLabels.spending, category)}} id={`${category}_Spendings_Check`} label='Include in Spendings' checked={localLabels.spending.includes(category)}/>
+                                    <Checkbox onChange={(e) =>  {Handlers.handleLabelsChange(e, localLabelSetters.income, localLabels.income, category)}} id={`${category}_Income_Check`} label='Include in Income' checked={localLabels.income.includes(category)}/>
+                                    <Checkbox onChange={(e) =>  {Handlers.handleLabelsChange(e, localLabelSetters.pos, localLabels.pos, category)}} id={`${category}_Pos_Check`} label='Is Considered Income' checked={localLabels.pos.includes(category)}/>
+                                </Form.Field>
+                                <Button onClick={() => {Handlers.handleDeleteCategory(form_id, localLabelSetters.categories, localLabels.categories, index)}} size={'mini'} style={{position: 'absolute', right:'0.5em', top: '0.7em'}} icon={'trash alternate'}></Button>
+                            </Form>
+                        </Container>
+                    )
+                }
+                return forms
+            }
+        }
+
+        return (
+            <>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button size={'mini'} 
+                            inverted={true} 
+                            color={'red'}
+                            style={{marginLeft: '0.5em'}}
+                            onClick={() => props.setEditCategoriesFormOpen(false)}>X</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Button style={{width: '90%', margin: '5%'}}>Save Changes</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container id={'Checkbox_Form_Collection'}>
+                    {genCategoryForms()}
                 </Container>
             </>
         )

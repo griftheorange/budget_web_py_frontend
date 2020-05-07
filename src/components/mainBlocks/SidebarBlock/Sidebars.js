@@ -1,12 +1,48 @@
 import { Header } from 'semantic-ui-react'
+import React, {useState, useEffect} from 'react'
 import { connect } from 'react-redux'
 import Sidebar from 'react-sidebar'
-import React from 'react';
 
 //Support Files
 import Generators from './Generators.js'
 
 function Sidebars(props) {
+
+    const [localSpendingsLabels, setLocalSpendingsLabels] = useState(null)
+    const [localIncomeLabels, setLocalIncomeLabels] = useState(null)
+    const [localPosLabels, setLocalPosLabels] = useState(null)
+    const [localCategories, setLocalCategories] = useState(null)
+    useEffect(() => {
+        if(props.data){
+            setLocalSpendingsLabels([...props.data['spendings_pie_data']['labels']])
+            setLocalIncomeLabels([...props.data['income_pie_data']['labels']])
+            setLocalPosLabels([...props.data['income_pie_split_categories']['pos']])
+            setLocalCategories([...props.data['categories']])
+        }
+    }, [props.data, props.editCategoriesFormOpen])
+
+    useEffect(() => {
+        let collection = document.getElementById('Checkbox_Form_Collection')
+        let children = collection.children
+        for(let i = 0; i < children.length; i++){
+            children[i].style = 'border: 1px solid black'
+        }
+    }, [props.editCategoriesFormOpen])
+
+    let localLabels = {
+        spending:localSpendingsLabels,
+        income:localIncomeLabels,
+        pos:localPosLabels,
+        categories:localCategories
+    }
+
+    let localLabelSetters = {
+        spending:setLocalSpendingsLabels,
+        income:setLocalIncomeLabels,
+        pos:setLocalPosLabels,
+        categories:setLocalCategories
+    }
+
     return (
         // Reset from Backup File Prompt IN PROGRESS
         <Sidebar sidebar={
@@ -87,6 +123,13 @@ function Sidebars(props) {
                         </div>} 
                  open={props.sidebarOpen} 
                  pullRight={true}>
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Edit Categories</Header>
+                            {Generators.genEditCategoriesForm(props, localLabels, localLabelSetters)}
+                        </div>} 
+                 open={props.editCategoriesFormOpen} 
+                 pullRight={true}></Sidebar>
 
             {props.children}
 
@@ -114,6 +157,7 @@ function mapStateToProps(state){
         resetFromBackupFormOpen: state.resetFromBackupFormOpen,
         newCardFormOpen: state.newCardFormOpen,
         deleteCardFormOpen: state.deleteCardFormOpen,
+        editCategoriesFormOpen: state.editCategoriesFormOpen,
         elementInEdit: state.elementInEdit
     })
 } 
@@ -170,6 +214,12 @@ function mapDispatchToProps(dispatch){
         setDeleteCardFormOpen: (open) => {
             dispatch({
                 type: "SET_DELETE_CARD_FORM_OPEN",
+                value: open
+            })
+        },
+        setEditCategoriesFormOpen: (open) => {
+            dispatch({
+                type: "SET_EDIT_CATEGORIES_FORM_OPEN",
                 value: open
             })
         },

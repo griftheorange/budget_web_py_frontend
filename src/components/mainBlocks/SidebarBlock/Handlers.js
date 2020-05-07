@@ -170,4 +170,24 @@ export default class Handlers{
             })
         }
     }
+
+    static handleLabelsChange(event, setter, data, category){
+        if(event.target.checked){
+            setter([...data, category])
+        } else {
+            for(let index in data){
+                if(category === data[index]){
+                    data.splice(index, 1)
+                    setter([...data])
+                }
+            }
+        }
+    }
+
+    static handleDeleteCategory(id, setter, data, index){
+        data.slice(index)
+        setter([...data])
+        let form_div = document.getElementById(id)
+        form_div.style = 'display: none'
+    }
 }

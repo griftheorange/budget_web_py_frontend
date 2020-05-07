@@ -39,6 +39,12 @@ function mapDispatchToProps(dispatch){
                 value: open
             })
         },
+        setEditCategoriesFormOpen: (open) => {
+            dispatch({
+                type: "SET_EDIT_CATEGORIES_FORM_OPEN",
+                value: open
+            })
+        },
         setElementInEdit: (element) => {
             dispatch({
                 type: "SET_ELEMENT_IN_EDIT",
