@@ -19,8 +19,6 @@ export default class Handlers{
             data.append('file', e.target.querySelector("input").files[0])
             data.append('filename', e.target.querySelector("input").files[0].name)
             
-            console.log(e.target.querySelector('select').value)
-
             Fetcher.submitFile(data, e.target.querySelector('select').value)
             .then(r => {props.loadData()})
         }
