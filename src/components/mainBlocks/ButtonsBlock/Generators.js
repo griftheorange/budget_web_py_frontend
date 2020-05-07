@@ -24,7 +24,8 @@ export default class Generators{
                         <select id={'Card_Type_Select'} style={{marginRight: '0.5em'}}>
                             {props.data ? SupportFunctions.genOptions(props.data['cards']) : null}
                         </select>
-                        <Button size={'mini'} icon={'plus'}></Button>
+                        <Button onClick={() => {props.setNewCardFormOpen(true)}} size={'mini'} icon={'plus'}></Button>
+                        <Button onClick={() => {props.setDeleteCardFormOpen(true)}} size={'mini'} icon={'trash alternate'}></Button>
                     </Container>
                     </Form.Field>
                     <Form.Field>

@@ -27,6 +27,7 @@ export default class Generators{
             </>
         )
     }
+    
     static genNewCardForm(props){
         return (
             <>
@@ -64,6 +65,36 @@ export default class Generators{
             </>
         )
     }
+
+    static genDeleteCardForm(props){
+        return (
+            <>
+                <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
+                    <Button size={'mini'} 
+                            inverted={true} 
+                            color={'red'}
+                            style={{marginLeft: '13em'}}
+                            onClick={() => {props.setDeleteCardFormOpen(false)}}>X</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Form onSubmit={() => {Handlers.handleDeleteCardSubmit(props)}} style={{paddingLeft: '0.5em', paddingRight: '0.5em'}}>
+                        <Form.Field>
+                            <label>Select Card</label>
+                            <select id={'Card_Delete_Input'} defaultValue="">
+                                <option value="" disabled>Select a Card to Delete</option>
+                                {props.data ? SupportFunctions.genOptions(props.data['cards']) : null}
+                            </select>
+                        </Form.Field>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                </Container> 
+            </>
+        )
+    }
+
     static genExportForm(props){
         return (
             <>
@@ -89,6 +120,7 @@ export default class Generators{
             </>
         )
     }
+
     static genSaveChangesForm(props){
         return (
             <>
@@ -118,6 +150,7 @@ export default class Generators{
             </>
         )
     }
+
     static genNewEntryForm(props){
         let date = SupportFunctions.formattedCurrentDate()
         return (
@@ -145,6 +178,7 @@ export default class Generators{
                         <Form.Field style={{margin: 0, padding: '0.5em'}}>
                             <label>Type</label>
                             <select defaultValue="" id={'Type_Input'} >
+                                <option value=""></option>
                                 {props.data ? SupportFunctions.genOptions(props.data['categories']) : null}
                             </select>
                         </Form.Field>

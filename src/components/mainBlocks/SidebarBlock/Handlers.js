@@ -46,12 +46,27 @@ export default class Handlers{
             Fetcher.patchNewCardType(json)
             .then(r => r.json())
             .then((response) => {
-                if(response['status'] == 'Success'){
+                if(response['status'] === 'Success'){
                     card_name.value = null
                     th.value = null
                     date.value = null
                     cost.value = null
                     props.setNewCardFormOpen(false)
+                    props.loadData()
+                }
+            })
+        }
+    }
+
+    static handleDeleteCardSubmit(props){
+        let card_delete = document.getElementById('Card_Delete_Input')
+        if(card_delete.value != ""){
+            Fetcher.deleteCard(card_delete.value)
+            .then(r => r.json())
+            .then((response) => {
+                if(response['status'] === 'Success'){
+                    card_delete.value = ""
+                    props.setDeleteCardFormOpen(false)
                     props.loadData()
                 }
             })

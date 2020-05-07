@@ -12,6 +12,7 @@ let initialState = {
     exportExcelFormOpen: false,
     resetFromBackupFormOpen: false,
     newCardFormOpen: false,
+    deleteCardFormOpen: false,
     initializeFormOpen: false,
     
     fullscreenGraph:false,
@@ -42,6 +43,8 @@ export default function(state=initialState, action){
             return {...state, initializeFormOpen:action.value}
         case "SET_NEW_CARD_FORM_OPEN":
             return {...state, newCardFormOpen:action.value}
+        case "SET_DELETE_CARD_FORM_OPEN":
+            return {...state, deleteCardFormOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":

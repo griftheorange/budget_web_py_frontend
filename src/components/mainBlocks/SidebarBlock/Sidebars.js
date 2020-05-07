@@ -17,13 +17,23 @@ function Sidebars(props) {
                         </div>} 
                  open={props.resetFromBackupFormOpen} 
                  pullRight={false}>
+        {/* New Card Generator */}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
-                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Add Card To List</Header>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Add Card</Header>
                             <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Fill in the Card Name, and the Corresponding Columns for the datafiles you download from your card Provider</Header.Subheader>
                             {Generators.genNewCardForm(props)}
                         </div>} 
                  open={props.newCardFormOpen} 
+                 pullRight={false}></Sidebar>
+        {/* Delete Card Prompt */}
+        <Sidebar sidebar={
+                        <div className={'sidebar-block'}>
+                            <Header textAlign={'center'} style={{padding: '0.5em', margin: '0'}}>Delete Card</Header>
+                            <Header.Subheader style={{textAlign: 'center', padding:'0.5em', margin:'0'}}>Select the Card you wish to Delete</Header.Subheader>
+                            {Generators.genDeleteCardForm(props)}
+                        </div>} 
+                 open={props.deleteCardFormOpen} 
                  pullRight={false}></Sidebar>
         {/* Export File Prompt DONE*/}
         <Sidebar sidebar={
@@ -103,6 +113,7 @@ function mapStateToProps(state){
         initializeFormOpen: state.initializeFormOpen,
         resetFromBackupFormOpen: state.resetFromBackupFormOpen,
         newCardFormOpen: state.newCardFormOpen,
+        deleteCardFormOpen: state.deleteCardFormOpen,
         elementInEdit: state.elementInEdit
     })
 } 
@@ -153,6 +164,12 @@ function mapDispatchToProps(dispatch){
         setNewCardFormOpen: (open) => {
             dispatch({
                 type: "SET_NEW_CARD_FORM_OPEN",
+                value: open
+            })
+        },
+        setDeleteCardFormOpen: (open) => {
+            dispatch({
+                type: "SET_DELETE_CARD_FORM_OPEN",
                 value: open
             })
         },

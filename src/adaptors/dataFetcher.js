@@ -75,6 +75,19 @@ class DataFetcher {
         })
     }
 
+    static deleteCard(card_name){
+        return fetch(`${API_DOMAIN}/delete_card`, {
+            method:'DELETE',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify({
+                card_name:card_name
+            })
+        })
+    }
+
     static saveBackupAs(fileTag, filename){
         return fetch(`${API_DOMAIN}/save_backup`, {
             method:'POST',

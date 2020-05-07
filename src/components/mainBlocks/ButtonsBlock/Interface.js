@@ -51,6 +51,18 @@ function mapDispatchToProps(dispatch){
                 type: "SET_INITIALIZE_FORM_OPEN",
                 value: open
             })
+        },
+        setNewCardFormOpen: (open) => {
+            dispatch({
+                type: "SET_NEW_CARD_FORM_OPEN",
+                value: open
+            })
+        },
+        setDeleteCardFormOpen: (open) => {
+            dispatch({
+                type: "SET_DELETE_CARD_FORM_OPEN",
+                value: open
+            })
         }
     })
 }
