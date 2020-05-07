@@ -24,7 +24,7 @@ function Main(props) {
                     <Graph/>
                     <Interface loadData={() => {loadData(props.setData, props.setSelectedCardType)}}/>
                 </div>
-                <div style={{position: 'relative'}} className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
+                <div className={props.fullscreenGraph ? 'bordered table-block fullscreen' : 'bordered table-block'}>
                     <TableComp loadData={() => {loadData(props.setData, props.setSelectedCardType)}}/>
                 </div>
             </div>

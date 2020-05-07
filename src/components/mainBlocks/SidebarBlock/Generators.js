@@ -305,6 +305,29 @@ export default class Generators{
             }
         }
 
+        function genSpecialTypeSelections(){
+            if(localLabels['categories']){
+                let possibleCorrections = [...localLabels['categories']]
+                possibleCorrections.splice(possibleCorrections.indexOf(localLabels['transfer']), 1)
+                let possibleTransfers = [...localLabels['categories']]
+                possibleTransfers.splice(possibleTransfers.indexOf(localLabels['correction']), 1)
+                return (
+                    <>
+                    <label>Transfer Type</label>
+                    <select onChange={(e) => {Handlers.handleSpecialSelectChange(e, localLabelSetters['transfer'])}} value={localLabels['transfer']}>
+                        <option value=""></option>
+                        {SupportFunctions.genOptions(possibleTransfers)}
+                    </select>
+                    <label>Correction Type</label>
+                    <select onChange={(e) => {Handlers.handleSpecialSelectChange(e, localLabelSetters['correction'])}} value={localLabels['correction']}>
+                        <option value=""></option>
+                        {SupportFunctions.genOptions(possibleCorrections)}
+                    </select>
+                    </>
+                )
+            }
+        }
+
         return (
             <>
                 <Container style={{display: 'flex', padding: '0.2em'}} className='sidebar-button-div'>
@@ -318,7 +341,17 @@ export default class Generators{
                     <Divider/>
                 </Container>
                 <Container>
-                    <Button style={{width: '90%', margin: '5%'}}>Save Changes</Button>
+                    <Button onClick={() => {Handlers.handleCheckboxSubmit(props, localLabels)}} style={{width: '90%', margin: '5%'}}>Save Changes</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Form>
+                        <Form.Field style={{margin: 0, padding: '0.5em'}}>
+                            {genSpecialTypeSelections()}
+                        </Form.Field>
+                    </Form>
                 </Container>
                 <Container>
                     <Divider/>

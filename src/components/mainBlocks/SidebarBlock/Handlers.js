@@ -185,9 +185,15 @@ export default class Handlers{
     }
 
     static handleDeleteCategory(id, setter, data, index){
-        data.slice(index)
+        data.splice(index,1)
         setter([...data])
-        let form_div = document.getElementById(id)
-        form_div.style = 'display: none'
+    }
+
+    static handleCheckboxSubmit(props, localLabels){
+        console.log(localLabels)
+    }
+
+    static handleSpecialSelectChange(e, setter){
+        setter(e.target.value)
     }
 }

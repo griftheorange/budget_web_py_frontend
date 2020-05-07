@@ -12,35 +12,35 @@ function Sidebars(props) {
     const [localIncomeLabels, setLocalIncomeLabels] = useState(null)
     const [localPosLabels, setLocalPosLabels] = useState(null)
     const [localCategories, setLocalCategories] = useState(null)
+    const [localTransferType, setLocalTransferType] = useState(null)
+    const [localCorrectionType, setLocalCorrectionType] = useState(null)
     useEffect(() => {
         if(props.data){
             setLocalSpendingsLabels([...props.data['spendings_pie_data']['labels']])
             setLocalIncomeLabels([...props.data['income_pie_data']['labels']])
             setLocalPosLabels([...props.data['income_pie_split_categories']['pos']])
             setLocalCategories([...props.data['categories']])
+            setLocalTransferType(props.data['special_categories']['transfer_type'])
+            setLocalCorrectionType(props.data['special_categories']['correction_type'])
         }
     }, [props.data, props.editCategoriesFormOpen])
-
-    useEffect(() => {
-        let collection = document.getElementById('Checkbox_Form_Collection')
-        let children = collection.children
-        for(let i = 0; i < children.length; i++){
-            children[i].style = 'border: 1px solid black'
-        }
-    }, [props.editCategoriesFormOpen])
 
     let localLabels = {
         spending:localSpendingsLabels,
         income:localIncomeLabels,
         pos:localPosLabels,
-        categories:localCategories
+        categories:localCategories,
+        transfer:localTransferType,
+        correction:localCorrectionType
     }
 
     let localLabelSetters = {
         spending:setLocalSpendingsLabels,
         income:setLocalIncomeLabels,
         pos:setLocalPosLabels,
-        categories:setLocalCategories
+        categories:setLocalCategories,
+        transfer:setLocalTransferType,
+        correction:setLocalCorrectionType
     }
 
     return (
@@ -61,7 +61,7 @@ function Sidebars(props) {
                             {Generators.genNewCardForm(props)}
                         </div>} 
                  open={props.newCardFormOpen} 
-                 pullRight={false}></Sidebar>
+                 pullRight={false}>
         {/* Delete Card Prompt */}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
@@ -70,7 +70,7 @@ function Sidebars(props) {
                             {Generators.genDeleteCardForm(props)}
                         </div>} 
                  open={props.deleteCardFormOpen} 
-                 pullRight={false}></Sidebar>
+                 pullRight={false}>
         {/* Export File Prompt DONE*/}
         <Sidebar sidebar={
                         <div className={'sidebar-block'}>
@@ -129,10 +129,13 @@ function Sidebars(props) {
                             {Generators.genEditCategoriesForm(props, localLabels, localLabelSetters)}
                         </div>} 
                  open={props.editCategoriesFormOpen} 
-                 pullRight={true}></Sidebar>
+                 pullRight={true}>
 
             {props.children}
 
+        </Sidebar>
+        </Sidebar>
+        </Sidebar>
         </Sidebar>
         </Sidebar>
         </Sidebar>
