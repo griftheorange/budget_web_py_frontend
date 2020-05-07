@@ -39,14 +39,16 @@ function Main(props) {
 function loadData(setData){
     let data = Fetcher.getData()
     data.then((json) => {
+        let linear = SupportFunctions.getLinear(json['line_data'].length)
+        let linearOpacity = SupportFunctions.getLinearOpacity(json['line_data'].length)
         json['line_data'] = json['line_data'].map((dataArr, index) => {
             return {
                 label: dataArr['header'],
                 data: dataArr['data'],
                 hidden: dataArr['header'] === 'Total Income',
-                backgroundColor: SupportFunctions.linearOpacity(index),
-                pointBackgroundColor: SupportFunctions.linear(index),
-                pointHoverBackgroundColor: SupportFunctions.linear(index),
+                backgroundColor: linearOpacity(index),
+                pointBackgroundColor: linear(index),
+                pointHoverBackgroundColor: linear(index),
                 pointBorderColor: "rgb(0,0,0,0)",
                 lineTension: 0,
                 pointRadius: "1"
@@ -54,7 +56,7 @@ function loadData(setData){
         })
         json['income_pie_data']['data'] = [{
             data: json['income_pie_data']['data'],
-            backgroundColor: genIncomeFills(json['income_pie_data']['labels']),
+            backgroundColor: genIncomeFills(json['income_pie_split_categories']),
             borderWidth: new Array(json['income_pie_data']['labels'].length).fill(0.2)
         }]
         json['spendings_pie_data']['data'] = [{
@@ -70,14 +72,15 @@ function loadData(setData){
 }
 
 //Helper for loadData, Sets fill colors for income pie graph
-function genIncomeFills(labels){
+function genIncomeFills(split_categories){
     let colors = []
-    for(let i = 0; i < labels.length; i++){
-        if(labels[i] === "INCOME"){
-            colors.push('rgb(10,76,26,1)')
-        }else{
-            colors.push(SupportFunctions.incomePieLinear(i))
-        }
+    let incomePieLinearPos = SupportFunctions.getIncomePieLinearPos(split_categories['pos'].length)
+    let incomePieLinearNeg = SupportFunctions.getIncomePieLinearNeg(split_categories['neg'].length)
+    for(let i = 0; i < split_categories['neg'].length; i++){
+        colors.push(incomePieLinearNeg(i))
+    }
+    for(let i = 0; i < split_categories['pos'].length; i++){
+        colors.push(incomePieLinearPos(i))
     }
     return colors
 }
@@ -85,8 +88,9 @@ function genIncomeFills(labels){
 //Helper for loadData, Sets fill colors for spendings pie graph
 function genSpendingsFills(labels){
     let colors = []
+    let spendingsPieLinear = SupportFunctions.getSpendingsPieLinear(labels.length)
     for(let i = 0; i < labels.length; i++){
-        colors.push(SupportFunctions.spendingsPieLinear(i))
+        colors.push(spendingsPieLinear(i))
     }
     return colors
 }

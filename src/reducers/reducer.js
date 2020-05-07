@@ -14,6 +14,7 @@ let initialState = {
     newCardFormOpen: false,
     deleteCardFormOpen: false,
     initializeFormOpen: false,
+    editCategoriesFormOpen: false,
     
     fullscreenGraph:false,
     graphInView: "line_graph"
@@ -45,6 +46,8 @@ export default function(state=initialState, action){
             return {...state, newCardFormOpen:action.value}
         case "SET_DELETE_CARD_FORM_OPEN":
             return {...state, deleteCardFormOpen:action.value}
+        case "SET_EDIT_CATEGORIES_FORM_OPEN":
+            return {...state, editCategoriesFormOpen:action.value}
         case "SET_ELEMENT_IN_EDIT":
             return {...state, elementInEdit:action.value}
         case "TOGGLE_FULLSCREEN_GRAPH":

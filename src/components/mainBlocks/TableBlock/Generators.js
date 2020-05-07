@@ -23,6 +23,9 @@ export default class Generators{
                 <div style={{display: props.fullscreenGraph ? 'none' : 'block',position: 'fixed', top:'7em', right: '1.5em'}}>
                     <Button size={'mini'} icon={'trash alternate'} onClick={() => {props.setDeleteEntryFormOpen(true)}}></Button>
                 </div>
+                <div style={{display: props.fullscreenGraph ? 'none' : 'block',position: 'fixed', top:'10em', right: '1.5em'}}>
+                    <Button size={'mini'} icon={'object ungroup'} onClick={()=>{}}></Button>
+                </div>
             </>
         )
     }
