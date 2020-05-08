@@ -14,14 +14,16 @@ function Sidebars(props) {
     const [localCategories, setLocalCategories] = useState(null)
     const [localTransferType, setLocalTransferType] = useState(null)
     const [localCorrectionType, setLocalCorrectionType] = useState(null)
+    const [newTypeFormVisible, setNewTypeFormVisible] = useState(false)
     useEffect(() => {
         if(props.data){
-            setLocalSpendingsLabels([...props.data['spendings_pie_data']['labels']])
-            setLocalIncomeLabels([...props.data['income_pie_data']['labels']])
+            setLocalSpendingsLabels([...props.data['spendings_pie_categories']])
+            setLocalIncomeLabels([...props.data['income_pie_categories']])
             setLocalPosLabels([...props.data['income_pie_split_categories']['pos']])
             setLocalCategories([...props.data['categories']])
             setLocalTransferType(props.data['special_categories']['transfer_type'])
             setLocalCorrectionType(props.data['special_categories']['correction_type'])
+            setNewTypeFormVisible(false)
         }
     }, [props.data, props.editCategoriesFormOpen])
 
@@ -31,7 +33,8 @@ function Sidebars(props) {
         pos:localPosLabels,
         categories:localCategories,
         transfer:localTransferType,
-        correction:localCorrectionType
+        correction:localCorrectionType,
+        newTypeFormVisible:newTypeFormVisible
     }
 
     let localLabelSetters = {
@@ -40,7 +43,8 @@ function Sidebars(props) {
         pos:setLocalPosLabels,
         categories:setLocalCategories,
         transfer:setLocalTransferType,
-        correction:setLocalCorrectionType
+        correction:setLocalCorrectionType,
+        setNewTypeFormVisible:setNewTypeFormVisible
     }
 
     return (

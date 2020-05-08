@@ -296,7 +296,7 @@ export default class Generators{
                                     <Checkbox onChange={(e) =>  {Handlers.handleLabelsChange(e, localLabelSetters.income, localLabels.income, category)}} id={`${category}_Income_Check`} label='Include in Income' checked={localLabels.income.includes(category)}/>
                                     <Checkbox onChange={(e) =>  {Handlers.handleLabelsChange(e, localLabelSetters.pos, localLabels.pos, category)}} id={`${category}_Pos_Check`} label='Is Considered Income' checked={localLabels.pos.includes(category)}/>
                                 </Form.Field>
-                                <Button onClick={() => {Handlers.handleDeleteCategory(form_id, localLabelSetters.categories, localLabels.categories, index)}} size={'mini'} style={{position: 'absolute', right:'0.5em', top: '0.7em'}} icon={'trash alternate'}></Button>
+                                <Button onClick={() => {Handlers.handleDeleteCategory(localLabelSetters.categories, localLabels.categories, index)}} size={'mini'} style={{position: 'absolute', right:'0.5em', top: '0.7em'}} icon={'trash alternate'}></Button>
                             </Form>
                         </Container>
                     )
@@ -342,6 +342,23 @@ export default class Generators{
                 </Container>
                 <Container>
                     <Button onClick={() => {Handlers.handleCheckboxSubmit(props, localLabels)}} style={{width: '90%', margin: '5%'}}>Save Changes</Button>
+                </Container>
+                <Container>
+                    <Divider/>
+                </Container>
+                <Container>
+                    <Container style={{display:'flex'}}>
+                        <Button onClick={()=>{localLabelSetters.setNewTypeFormVisible(!localLabels.newTypeFormVisible)}} icon={'plus'} style={{width:'90%', margin:'auto'}}>New Category</Button>
+                    </Container>
+                    <Container>
+                        <Form style={{margin: 0, padding: '0.5em'}} onSubmit={() => {Handlers.handleNewCategorySubmit(localLabels['categories'], localLabelSetters['categories'])}}>
+                            <Form.Field>
+                                <label style={{display: localLabels.newTypeFormVisible ? 'block' : 'none'}} >New Category Name</label>
+                                <input style={{display: localLabels.newTypeFormVisible ? 'block' : 'none'}} id={'New_Category_Name_Input'}></input>
+                            </Form.Field>
+                            <Button style={{display: localLabels.newTypeFormVisible ? 'block' : 'none', width: '90%', margin: '5%'}} type='submit'>Save New Category</Button>
+                        </Form>
+                    </Container>
                 </Container>
                 <Container>
                     <Divider/>

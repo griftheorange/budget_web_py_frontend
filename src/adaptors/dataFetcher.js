@@ -127,6 +127,17 @@ class DataFetcher {
             })
         })
     }
+
+    static patchCategories(labels){
+        return fetch(`${API_DOMAIN}/patch_types`, {
+            method:'PATCH',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+            },
+            body: JSON.stringify(labels)
+        })
+    }
 }
 
 export default DataFetcher

@@ -135,19 +135,21 @@ export default class Handlers{
     static handleInitFileSubmit(props){
         let fileInput = document.getElementById('Init_File_Input')
 
-        let data = new FormData()
-        data.append('file', fileInput.files[0])
-        data.append('filename', fileInput.files[0].name)
-            
-        Fetcher.initializeTable(data)
-        .then(r => r.json())
-        .then((response) => {
-            if(response['status'] === 'Success'){
-                props.setInitializeFormOpen(false)
-                fileInput.value=null
-                props.loadData()
-            }
-        })
+        if(fileInput.files[0]){
+            let data = new FormData()
+            data.append('file', fileInput.files[0])
+            data.append('filename', fileInput.files[0].name)
+                
+            Fetcher.initializeTable(data)
+            .then(r => r.json())
+            .then((response) => {
+                if(response['status'] === 'Success'){
+                    props.setInitializeFormOpen(false)
+                    fileInput.value=null
+                    props.loadData()
+                }
+            })
+        }
      }
 
     static handleTypeSelection(category, props){
@@ -184,16 +186,36 @@ export default class Handlers{
         }
     }
 
-    static handleDeleteCategory(id, setter, data, index){
+    static handleDeleteCategory(setter, data, index){
         data.splice(index,1)
         setter([...data])
     }
 
     static handleCheckboxSubmit(props, localLabels){
-        console.log(localLabels)
+        Fetcher.patchCategories(localLabels)
+        .then(r => r.json())
+        .then((response) => {
+            if(response['status'] === 'Success'){
+                props.setEditCategoriesFormOpen(false)
+                props.loadData()
+            }
+        })
     }
 
     static handleSpecialSelectChange(e, setter){
         setter(e.target.value)
     }
+
+    static handleNewCategorySubmit(categories, setter){
+        let name_input = document.getElementById('New_Category_Name_Input')
+        if(name_input.value){
+            console.log('has value')
+            if(!categories.includes(name_input.value)){
+                console.log('is unique')
+                setter([...categories, name_input.value])
+                name_input.value = null
+            }
+        }
+    }
+
 }
