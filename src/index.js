@@ -9,6 +9,10 @@ import generalReducer from './reducers/reducer.js'
 
 let store = createStore(generalReducer)
 
+fetch("api.griffinpoole.com")
+.then(r => r.json())
+.then(console.log)
+
 ReactDOM.render(
   <Provider store={store}>
     <Main/>

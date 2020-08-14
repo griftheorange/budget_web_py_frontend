@@ -25,6 +25,11 @@ function LineComp(props) {
                         scaleLabel: {
                             display: true,
                             labelString: "Amount"
+                        },
+                        ticks: {
+                            callback: function(){
+                                return '####'
+                            }
                         }
                     }],
                     xAxes: [{
